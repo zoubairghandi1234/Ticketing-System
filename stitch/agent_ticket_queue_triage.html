@@ -1,0 +1,621 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpDesk — Agent Ticket Queue &amp; Task Center</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#1D4ED8',
+        'primary-hover': '#1E40AF',
+        'primary-subtle': '#EFF6FF',
+        'on-primary': '#FFFFFF',
+        'nav-dark': '#111827',
+        'nav-border': '#1F2937',
+        'text-main': '#0F172A',
+        'text-muted': '#64748B',
+        'border-subtle': '#E2E8F0',
+        'success': '#166534',
+        'success-surface': '#DCFCE7',
+        'warning': '#9A3412',
+        'warning-surface': '#FFEDD5',
+        'error': '#991B1B',
+        'error-surface': '#FEE2E2',
+        'info': '#1E40AF',
+        'info-surface': '#DBEAFE',
+        'light-surface': '#FFFFFF',
+        'light-on-surface': '#0F172A',
+        'light-surface-container': '#F8FAFC',
+        'light-on-surface-container': '#334155',
+        'light-outline': '#CBD5E1',
+        'dark-surface': '#111827',
+        'dark-on-surface': '#F8FAFC',
+        'dark-surface-container': '#1F2937',
+        'dark-on-surface-container': '#E2E8F0',
+        'dark-outline': '#374151',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Red Hat Text"', 'sans-serif'],
+        'headline': ['"Red Hat Text"', 'sans-serif'],
+        'title': ['"Red Hat Text"', 'sans-serif'],
+        'body': ['"Instrument Sans"', 'sans-serif'],
+        'label': ['"Instrument Sans"', 'sans-serif'],
+        'code': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-xl': ['28px', { lineHeight: '36px', fontWeight: '700' }],
+        'headline-xl-mobile': ['22px', { lineHeight: '28px', fontWeight: '700' }],
+        'headline-lg': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-lg-mobile': ['18px', { lineHeight: '24px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'code-sm': ['12px', { lineHeight: '16px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+        'surface-exit': '140ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;family=Red+Hat+Text:wght@500;600;700&amp;family=Spline+Sans+Mono:wght@500&amp;display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-light-surface-container font-body text-text-main min-h-[1024px] flex flex-col md:flex-row" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+  <!-- Fixed Role-Based Navigation Sidebar (Agent View) -->
+  <aside class="w-full md:w-64 bg-nav-dark text-on-primary flex-shrink-0 md:min-h-[1024px] flex flex-col justify-between border-r border-nav-border z-20" data-stitch-vh="md:min-h-[1024px]===md:min-h-screen">
+    <div>
+      <div class="h-16 px-6 flex items-center justify-between border-b border-nav-border">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary shadow-sm">
+            <span class="material-symbols-outlined text-headline-lg">headset_mic</span>
+          </div>
+          <div>
+            <span class="font-headline text-title-md font-bold tracking-tight text-white block leading-tight">HelpDesk</span>
+            <span class="font-label text-label-sm text-primary-subtle uppercase tracking-wider block font-semibold">Agent Ops</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="p-4 space-y-1.5" aria-label="Support Agent Navigation">
+        <a href="#dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#queue" class="flex items-center justify-between px-3.5 py-2.5 rounded bg-primary text-white font-label text-label-md transition-colors shadow-sm">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-title-md">inbox</span>
+            <span>Ticket Queue</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-label-sm font-bold bg-blue-700 text-white">42</span>
+        </a>
+        <a href="#assigned" class="flex items-center justify-between px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-title-md">assignment_ind</span>
+            <span>My Assigned</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-label-sm font-bold bg-gray-800 text-gray-200">7</span>
+        </a>
+        <a href="#unassigned" class="flex items-center justify-between px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-title-md">pending_actions</span>
+            <span>Unassigned</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-label-sm font-bold bg-warning text-white">5</span>
+        </a>
+        <a href="#customers" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">group</span>
+          <span>Customers</span>
+        </a>
+        <a href="#kb" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">menu_book</span>
+          <span>Knowledge Base</span>
+        </a>
+        <a href="#reports" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">analytics</span>
+          <span>Performance</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Agent Profile Footer -->
+    <div class="p-4 border-t border-nav-border">
+      <div class="flex items-center justify-between px-2 py-2">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-label-md ring-2 ring-emerald-500">
+            SJ
+          </div>
+          <div class="overflow-hidden">
+            <p class="font-label text-label-md text-white truncate">Sarah Jenkins</p>
+            <p class="text-body-sm text-gray-300 truncate">Tier 2 Senior Agent</p>
+          </div>
+        </div>
+        <button type="button" aria-label="Agent sign out" class="text-gray-300 hover:text-white p-1.5 rounded hover:bg-gray-800 transition-colors">
+          <span class="material-symbols-outlined text-title-md">logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Workspace Shell -->
+  <div class="flex-1 flex flex-col min-w-0">
+    
+    <!-- Top Action Header -->
+    <header class="h-16 bg-light-surface border-b border-border-subtle px-8 flex items-center justify-between sticky top-0 z-10">
+      
+      <!-- Search & Quick Filters -->
+      <div class="flex items-center gap-4 w-full max-w-lg">
+        <div class="relative w-full">
+          <span class="material-symbols-outlined absolute left-3 top-2.5 text-light-on-surface-container text-title-md">search</span>
+          <input type="text" placeholder="Search tickets by subject, TCK-#, customer, or tags..." class="w-full pl-9 pr-4 py-2 bg-light-surface-container border border-border-subtle rounded text-body-md text-text-main focus:bg-light-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+        </div>
+      </div>
+
+      <!-- Action items & Notification Bell -->
+      <div class="flex items-center gap-3">
+        <div class="flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle rounded text-body-sm text-text-main bg-light-surface-container">
+          <span class="material-symbols-outlined text-light-on-surface-container text-title-md">schedule</span>
+          <span>Shift: <strong>08:00 - 17:00 EST</strong></span>
+        </div>
+
+        <!-- Notification dropdown toggle with badge -->
+        <button type="button" class="p-2 text-text-main hover:text-primary hover:bg-light-surface-container rounded transition-colors relative" aria-label="Notifications Center">
+          <span class="material-symbols-outlined text-headline-lg">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary ring-2 ring-white"></span>
+        </button>
+
+        <div class="h-6 w-px bg-border-subtle mx-1"></div>
+
+        <button type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-primary hover:bg-primary-hover text-on-primary rounded text-label-md font-label shadow-sm transition-colors">
+          <span class="material-symbols-outlined text-title-md">refresh</span>
+          <span>Refresh Queue</span>
+        </button>
+      </div>
+
+    </header>
+
+    <!-- Page Body -->
+    <main class="p-8 max-w-7xl w-full mx-auto space-y-6 flex-1">
+      
+      <!-- Header Title & Agent Workload Bar -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="font-headline text-headline-xl text-text-main tracking-tight">Agent Ticket Queue &amp; Task Center</h1>
+          <p class="text-body-md text-light-on-surface-container">Manage incoming customer issues, claim unassigned requests, and execute bulk triage.</p>
+        </div>
+        
+        <!-- Agent Workload Snapshot Card -->
+        <div class="flex items-center gap-4 bg-light-surface p-3 rounded-lg border border-border-subtle shadow-sm">
+          <div>
+            <p class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider">My Capacity</p>
+            <p class="font-headline text-title-md text-text-main">7 of 12 tickets</p>
+          </div>
+          <div class="w-24 h-2.5 bg-light-surface-container rounded-full overflow-hidden">
+            <div class="h-full bg-primary rounded-full" style="width: 58%"></div>
+          </div>
+          <span class="text-label-sm font-semibold text-success bg-green-50 px-2 py-0.5 rounded border border-green-200">Optimal</span>
+        </div>
+      </div>
+
+      <!-- 6 Agent Operational Statistics Cards -->
+      <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+        
+        <div class="bg-light-surface p-4 rounded-md border border-border-subtle shadow-sm">
+          <span class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider block">Assigned to Me</span>
+          <p class="font-headline text-headline-lg text-primary tabular-nums mt-1 font-bold">7</p>
+          <p class="text-body-sm text-light-on-surface-container text-label-sm mt-0.5">2 urgent SLA</p>
+        </div>
+
+        <div class="bg-light-surface p-4 rounded-md border border-border-subtle shadow-sm">
+          <span class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider block">Unassigned Pool</span>
+          <p class="font-headline text-headline-lg text-warning tabular-nums mt-1 font-bold">5</p>
+          <p class="text-body-sm text-text-main text-label-sm mt-0.5">Ready to claim</p>
+        </div>
+
+        <div class="bg-light-surface p-4 rounded-md border border-border-subtle shadow-sm">
+          <span class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider block">In Progress</span>
+          <p class="font-headline text-headline-lg text-info tabular-nums mt-1 font-bold">4</p>
+          <p class="text-body-sm text-light-on-surface-container text-label-sm mt-0.5">Under investigation</p>
+        </div>
+
+        <div class="bg-light-surface p-4 rounded-md border border-border-subtle shadow-sm">
+          <span class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider block">Waiting Customer</span>
+          <p class="font-headline text-headline-lg text-text-main tabular-nums mt-1 font-bold">3</p>
+          <p class="text-body-sm text-light-on-surface-container text-label-sm mt-0.5">Awaiting logs</p>
+        </div>
+
+        <div class="bg-light-surface p-4 rounded-md border border-border-subtle shadow-sm">
+          <span class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider block">Resolved Today</span>
+          <p class="font-headline text-headline-lg text-success tabular-nums mt-1 font-bold">9</p>
+          <p class="text-body-sm text-success text-label-sm mt-0.5 font-semibold">100% CSAT</p>
+        </div>
+
+        <div class="bg-light-surface p-4 rounded-md border border-border-subtle shadow-sm">
+          <span class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider block">Overdue Warning</span>
+          <p class="font-headline text-headline-lg text-error tabular-nums mt-1 font-bold">0</p>
+          <p class="text-body-sm text-success text-label-sm mt-0.5 font-semibold">Zero breaches</p>
+        </div>
+
+      </div>
+
+      <!-- Segmented Queue Views / Filter Bar -->
+      <div class="bg-light-surface rounded-md border border-border-subtle shadow-sm p-4 space-y-4">
+        
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border-subtle pb-3">
+          <!-- Queue tabs -->
+          <div class="flex flex-wrap items-center gap-1.5">
+            <button type="button" class="px-3.5 py-1.5 rounded-full bg-primary text-on-primary font-label text-label-md font-semibold shadow-sm">
+              All Active Queue (42)
+            </button>
+            <button type="button" class="px-3.5 py-1.5 rounded-full text-light-on-surface-container hover:text-text-main hover:bg-light-surface-container font-label text-label-md font-medium">
+              Unassigned (5)
+            </button>
+            <button type="button" class="px-3.5 py-1.5 rounded-full text-light-on-surface-container hover:text-text-main hover:bg-light-surface-container font-label text-label-md font-medium">
+              Urgent &amp; High (12)
+            </button>
+            <button type="button" class="px-3.5 py-1.5 rounded-full text-light-on-surface-container hover:text-text-main hover:bg-light-surface-container font-label text-label-md font-medium">
+              My Assigned (7)
+            </button>
+            <button type="button" class="px-3.5 py-1.5 rounded-full text-light-on-surface-container hover:text-text-main hover:bg-light-surface-container font-label text-label-md font-medium">
+              Recently Updated
+            </button>
+          </div>
+
+          <!-- Bulk Action Toolbar (Active when rows are selected) -->
+          <div class="flex items-center gap-2">
+            <span class="text-body-sm text-text-main font-semibold">2 selected:</span>
+            <button type="button" class="inline-flex items-center gap-1 px-3 py-1.5 border border-border-subtle rounded text-label-md font-label text-primary hover:bg-primary-subtle">
+              <span class="material-symbols-outlined text-title-md">person_add</span> Claim (Assign to Me)
+            </button>
+            <button type="button" class="inline-flex items-center gap-1 px-3 py-1.5 border border-border-subtle rounded text-label-md font-label text-text-main hover:bg-light-surface-container">
+              <span class="material-symbols-outlined text-title-md">label</span> Apply Tag
+            </button>
+          </div>
+        </div>
+
+        <!-- Filter Dropdown Controls -->
+        <div class="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-5 gap-3 pt-1">
+          <div>
+            <label class="block text-label-sm font-label text-light-on-surface-container mb-1">Status</label>
+            <select class="w-full text-body-sm bg-light-surface-container border border-border-subtle rounded px-2.5 py-1.5 text-text-main">
+              <option>All Statuses</option>
+              <option>Open</option>
+              <option>In Progress</option>
+              <option>Waiting for Customer</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-label-sm font-label text-light-on-surface-container mb-1">Priority</label>
+            <select class="w-full text-body-sm bg-light-surface-container border border-border-subtle rounded px-2.5 py-1.5 text-text-main">
+              <option>All Priorities</option>
+              <option>Urgent</option>
+              <option>High</option>
+              <option>Medium</option>
+              <option>Low</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-label-sm font-label text-light-on-surface-container mb-1">Category</label>
+            <select class="w-full text-body-sm bg-light-surface-container border border-border-subtle rounded px-2.5 py-1.5 text-text-main">
+              <option>All Categories</option>
+              <option>Technical Issue</option>
+              <option>Billing</option>
+              <option>Account Problem</option>
+              <option>Feature Request</option>
+            </select>
+          </div>
+
+          <div>
+            <label class="block text-label-sm font-label text-light-on-surface-container mb-1">SLA Deadline</label>
+            <select class="w-full text-body-sm bg-light-surface-container border border-border-subtle rounded px-2.5 py-1.5 text-text-main">
+              <option>All Deadlines</option>
+              <option>&lt; 1 hour remaining</option>
+              <option>&lt; 4 hours remaining</option>
+              <option>Due today</option>
+            </select>
+          </div>
+
+          <div class="flex items-end">
+            <button type="button" class="w-full py-1.5 border border-border-subtle rounded text-label-md font-label text-light-on-surface-container hover:text-text-main hover:bg-light-surface-container text-center">
+              Clear Filters
+            </button>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Ticket Queue Interactive Table -->
+      <section class="bg-light-surface rounded-md border border-border-subtle shadow-sm overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-light-surface-container border-b border-border-subtle text-light-on-surface-container">
+              <tr>
+                <th scope="col" class="py-3 px-4 w-10">
+                  <input type="checkbox" class="w-4 h-4 rounded border-border-subtle text-primary focus:ring-primary">
+                </th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Ticket ID</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Subject &amp; Customer</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Category</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Priority</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Status</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Assigned Agent</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">SLA Target</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider text-right">Actions</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border-subtle text-body-md text-text-main">
+              
+              <!-- Row 1: Urgent In Progress (Assigned to Me) -->
+              <tr class="hover:bg-light-surface-container transition-colors bg-blue-50/20">
+                <td class="py-3.5 px-4">
+                  <input type="checkbox" checked class="w-4 h-4 rounded border-border-subtle text-primary focus:ring-primary">
+                </td>
+                <td class="py-3.5 px-4 font-code text-code-sm text-primary font-bold">TCK-1001</td>
+                <td class="py-3.5 px-4">
+                  <p class="font-semibold text-text-main text-balance">SSO SAML login redirection error</p>
+                  <p class="text-body-sm text-light-on-surface-container">Elena Rostova · Acme Health Inc.</p>
+                </td>
+                <td class="py-3.5 px-4 text-text-main">Technical Issue</td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-error-surface text-error">
+                    <span class="material-symbols-outlined text-label-sm">keyboard_double_arrow_up</span> Urgent
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-info-surface text-info">
+                    <span class="w-1.5 h-1.5 rounded-full bg-info"></span> In Progress
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="font-semibold text-primary">Sarah Jenkins (You)</span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1 text-label-sm font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded">
+                    <span class="material-symbols-outlined text-label-sm">timer</span> 18m left
+                  </span>
+                </td>
+                <td class="py-3.5 px-4 text-right">
+                  <a href="../agent-workspace/AgentWorkspace.html" class="inline-flex items-center gap-1 px-3 py-1.5 bg-primary hover:bg-primary-hover text-on-primary rounded text-label-md font-label shadow-sm">
+                    <span>Open Workspace</span>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Row 2: Unassigned High Priority (Claimable) -->
+              <tr class="hover:bg-light-surface-container transition-colors">
+                <td class="py-3.5 px-4">
+                  <input type="checkbox" checked class="w-4 h-4 rounded border-border-subtle text-primary focus:ring-primary">
+                </td>
+                <td class="py-3.5 px-4 font-code text-code-sm text-primary font-bold">TCK-1002</td>
+                <td class="py-3.5 px-4">
+                  <p class="font-semibold text-text-main text-balance">Invoice breakdown request for Q3 enterprise seats</p>
+                  <p class="text-body-sm text-light-on-surface-container">Marcus Vance · Apex Capital</p>
+                </td>
+                <td class="py-3.5 px-4 text-text-main">Billing</td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-warning-surface text-warning">
+                    <span class="material-symbols-outlined text-label-sm">arrow_upward</span> High
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-warning-surface text-warning">
+                    <span class="w-1.5 h-1.5 rounded-full bg-warning"></span> Open
+                  </span>
+                </td>
+                <td class="py-3.5 px-4 text-light-on-surface-container italic">
+                  Unassigned
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="text-label-sm font-medium text-text-main">2h 15m left</span>
+                </td>
+                <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                  <button type="button" class="inline-flex items-center gap-1 px-3 py-1.5 border border-primary text-primary hover:bg-primary hover:text-white rounded text-label-md font-label transition-colors whitespace-nowrap font-semibold">
+                    <span class="material-symbols-outlined text-title-md">person_add</span>
+                    <span>Claim Ticket</span>
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Row 3: Unassigned Urgent (Claimable) -->
+              <tr class="hover:bg-light-surface-container transition-colors">
+                <td class="py-3.5 px-4">
+                  <input type="checkbox" class="w-4 h-4 rounded border-border-subtle text-primary focus:ring-primary">
+                </td>
+                <td class="py-3.5 px-4 font-code text-code-sm text-primary font-bold">TCK-1003</td>
+                <td class="py-3.5 px-4">
+                  <p class="font-semibold text-text-main text-balance">API rate limiting returning 429 prematurely</p>
+                  <p class="text-body-sm text-light-on-surface-container">Devon Zhao · CloudGrid</p>
+                </td>
+                <td class="py-3.5 px-4 text-text-main">Technical Issue</td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-error-surface text-error">
+                    <span class="material-symbols-outlined text-label-sm">keyboard_double_arrow_up</span> Urgent
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-warning-surface text-warning">
+                    <span class="w-1.5 h-1.5 rounded-full bg-warning"></span> Open
+                  </span>
+                </td>
+                <td class="py-3.5 px-4 text-light-on-surface-container italic">
+                  Unassigned
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1 text-label-sm font-semibold text-error bg-red-50 px-2 py-0.5 rounded">
+                    <span class="material-symbols-outlined text-label-sm">priority_high</span> 24m left
+                  </span>
+                </td>
+                <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                  <button type="button" class="inline-flex items-center gap-1 px-3 py-1.5 border border-primary text-primary hover:bg-primary hover:text-white rounded text-label-md font-label transition-colors whitespace-nowrap font-semibold">
+                    <span class="material-symbols-outlined text-title-md">person_add</span>
+                    <span>Claim Ticket</span>
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Row 4: Assigned to colleague (View only, no agent reassignment) -->
+              <tr class="hover:bg-light-surface-container transition-colors">
+                <td class="py-3.5 px-4">
+                  <input type="checkbox" class="w-4 h-4 rounded border-border-subtle text-primary focus:ring-primary">
+                </td>
+                <td class="py-3.5 px-4 font-code text-code-sm text-primary font-bold">TCK-1008</td>
+                <td class="py-3.5 px-4">
+                  <p class="font-semibold text-text-main text-balance">Webhooks signature verification failing</p>
+                  <p class="text-body-sm text-light-on-surface-container">Kenji Takahashi · Nexus Data Labs</p>
+                </td>
+                <td class="py-3.5 px-4 text-text-main">Technical Issue</td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-light-surface-container text-text-main border border-border-subtle">
+                    <span class="material-symbols-outlined text-label-sm">drag_handle</span> Medium
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-light-surface-container text-light-on-surface-container border border-border-subtle">
+                    <span class="w-1.5 h-1.5 rounded-full bg-text-muted"></span> Waiting Customer
+                  </span>
+                </td>
+                <td class="py-3.5 px-4 text-text-main">
+                  Liam Gallagher
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="text-label-sm font-medium text-text-main">On Track</span>
+                </td>
+                <td class="py-3.5 px-4 text-right">
+                  <button type="button" class="text-primary hover:text-primary-hover font-label text-label-md font-semibold">
+                    View
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Pagination Bar -->
+        <div class="p-4 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between text-body-sm text-light-on-surface-container gap-3">
+          <span>Showing <strong>1 to 4</strong> of <strong>42</strong> active queue tickets</span>
+          <div class="flex items-center gap-2">
+            <button type="button" disabled class="px-3 py-1 border border-border-subtle rounded text-light-on-surface-container bg-light-surface-container cursor-not-allowed text-body-sm">Previous</button>
+            <button type="button" class="px-3 py-1 bg-primary text-on-primary rounded font-semibold text-body-sm">1</button>
+            <button type="button" class="px-3 py-1 border border-border-subtle rounded hover:bg-light-surface-container text-body-sm text-text-main">2</button>
+            <button type="button" class="px-3 py-1 border border-border-subtle rounded hover:bg-light-surface-container text-body-sm text-text-main">3</button>
+            <button type="button" class="px-3 py-1 border border-border-subtle rounded hover:bg-light-surface-container text-body-sm text-text-main">Next</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Agent Quick-Reference Knowledge Snippets & Notifications Panel -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        
+        <!-- Knowledge Base Shortcuts -->
+        <div class="bg-light-surface p-6 rounded-md border border-border-subtle shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="font-headline text-title-md text-text-main flex items-center gap-2">
+              <span class="material-symbols-outlined text-primary text-headline-lg">auto_stories</span>
+              <span>Fast Agent SOPs &amp; Troubleshooting</span>
+            </h2>
+            <a href="#kb" class="text-label-md font-label text-primary hover:text-primary-hover font-semibold">Browse KB</a>
+          </div>
+          <div class="space-y-2 pt-1">
+            <div class="p-3 bg-light-surface-container rounded border border-border-subtle flex items-center justify-between">
+              <div>
+                <p class="font-semibold text-body-sm text-text-main">Okta SAML Certificate Rotation SOP</p>
+                <p class="text-body-sm text-light-on-surface-container text-label-sm">Updated yesterday · 4 min read</p>
+              </div>
+              <span class="material-symbols-outlined text-light-on-surface-container text-title-md">chevron_right</span>
+            </div>
+            <div class="p-3 bg-light-surface-container rounded border border-border-subtle flex items-center justify-between">
+              <div>
+                <p class="font-semibold text-body-sm text-text-main">Stripe Recurring Billing Retry Rules</p>
+                <p class="text-body-sm text-light-on-surface-container text-label-sm">Finance &amp; Accounts · 3 min read</p>
+              </div>
+              <span class="material-symbols-outlined text-light-on-surface-container text-title-md">chevron_right</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Priority Notifications Feed -->
+        <div class="bg-light-surface p-6 rounded-md border border-border-subtle shadow-sm space-y-3">
+          <div class="flex items-center justify-between">
+            <h2 class="font-headline text-title-md text-text-main flex items-center gap-2">
+              <span class="material-symbols-outlined text-amber-500 text-headline-lg">notifications_active</span>
+              <span>Notifications Stream</span>
+            </h2>
+            <button type="button" class="text-label-md font-label text-primary hover:text-primary-hover font-semibold">Mark All Read</button>
+          </div>
+          <div class="space-y-2 pt-1 text-body-sm">
+            <div class="p-3 rounded border border-blue-200 bg-primary-subtle/30 flex items-start gap-3">
+              <span class="material-symbols-outlined text-primary text-title-md mt-0.5">reply</span>
+              <div>
+                <p class="text-text-main font-semibold">Elena Rostova replied to TCK-1001</p>
+                <p class="text-light-on-surface-container text-label-sm">&#34;Confirmed SAML error is resolved on our side.&#34; · 6m ago</p>
+              </div>
+            </div>
+            <div class="p-3 rounded border border-border-subtle bg-light-surface-container flex items-start gap-3">
+              <span class="material-symbols-outlined text-warning text-title-md mt-0.5">assignment_ind</span>
+              <div>
+                <p class="text-text-main font-semibold">New ticket TCK-1009 routed to Queue</p>
+                <p class="text-light-on-surface-container text-label-sm">Requires triage · 14m ago</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+
+
+</body></html>

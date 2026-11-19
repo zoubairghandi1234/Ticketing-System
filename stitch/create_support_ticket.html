@@ -1,0 +1,329 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpDesk — Submit New Support Ticket</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#1D4ED8',
+        'primary-hover': '#1E40AF',
+        'primary-subtle': '#EFF6FF',
+        'on-primary': '#FFFFFF',
+        'nav-dark': '#111827',
+        'nav-border': '#1F2937',
+        'text-main': '#0F172A',
+        'text-muted': '#64748B',
+        'border-subtle': '#E2E8F0',
+        'success': '#166534',
+        'success-surface': '#DCFCE7',
+        'warning': '#9A3412',
+        'warning-surface': '#FFEDD5',
+        'error': '#991B1B',
+        'error-surface': '#FEE2E2',
+        'info': '#1E40AF',
+        'info-surface': '#DBEAFE',
+        'light-surface': '#FFFFFF',
+        'light-on-surface': '#0F172A',
+        'light-surface-container': '#F8FAFC',
+        'light-on-surface-container': '#334155',
+        'light-outline': '#CBD5E1',
+        'dark-surface': '#111827',
+        'dark-on-surface': '#F8FAFC',
+        'dark-surface-container': '#1F2937',
+        'dark-on-surface-container': '#E2E8F0',
+        'dark-outline': '#374151',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Red Hat Text"', 'sans-serif'],
+        'headline': ['"Red Hat Text"', 'sans-serif'],
+        'title': ['"Red Hat Text"', 'sans-serif'],
+        'body': ['"Instrument Sans"', 'sans-serif'],
+        'label': ['"Instrument Sans"', 'sans-serif'],
+        'code': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-xl': ['28px', { lineHeight: '36px', fontWeight: '700' }],
+        'headline-xl-mobile': ['22px', { lineHeight: '28px', fontWeight: '700' }],
+        'headline-lg': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-lg-mobile': ['18px', { lineHeight: '24px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'code-sm': ['12px', { lineHeight: '16px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+        'surface-exit': '140ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;family=Red+Hat+Text:wght@500;600;700&amp;family=Spline+Sans+Mono:wght@500&amp;display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-light-surface-container font-body text-text-main min-h-[1024px] flex flex-col md:flex-row" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+  <!-- Fixed Role-Based Navigation Sidebar (Customer View) -->
+  <aside class="w-full md:w-64 bg-nav-dark text-on-primary flex-shrink-0 md:min-h-[1024px] flex flex-col justify-between border-r border-nav-border z-20" data-stitch-vh="md:min-h-[1024px]===md:min-h-screen">
+    <div>
+      <div class="h-16 px-6 flex items-center justify-between border-b border-nav-border">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary shadow-sm">
+            <span class="material-symbols-outlined text-headline-lg">headset_mic</span>
+          </div>
+          <div>
+            <span class="font-headline text-title-md font-bold tracking-tight text-white block leading-tight">HelpDesk</span>
+            <span class="font-label text-label-sm text-gray-300 uppercase tracking-wider block">Customer Portal</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="p-4 space-y-1.5" aria-label="Customer Navigation">
+        <a href="#dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#my-tickets" class="flex items-center justify-between px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-title-md">confirmation_number</span>
+            <span>My Tickets</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-label-sm font-bold bg-gray-800 text-gray-200 border border-gray-700">4</span>
+        </a>
+        <a href="#create-ticket" class="flex items-center gap-3 px-3.5 py-2.5 rounded bg-primary text-white font-label text-label-md transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-title-md">add_circle</span>
+          <span>Create Ticket</span>
+        </a>
+        <a href="#profile" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">account_circle</span>
+          <span>Profile</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="p-4 border-t border-nav-border">
+      <div class="flex items-center justify-between px-2 py-2">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-label-md">
+            ER
+          </div>
+          <div class="overflow-hidden">
+            <p class="font-label text-label-md text-white truncate">Elena Rostova</p>
+            <p class="text-body-sm text-gray-300 truncate">Acme Health</p>
+          </div>
+        </div>
+        <button type="button" aria-label="Sign out" class="text-gray-300 hover:text-white p-1.5 rounded hover:bg-gray-800 transition-colors">
+          <span class="material-symbols-outlined text-title-md">logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col min-w-0">
+    
+    <!-- Top Breadcrumb & Navbar -->
+    <header class="h-16 bg-light-surface border-b border-border-subtle px-8 flex items-center justify-between sticky top-0 z-10">
+      <nav class="flex items-center gap-2 text-body-sm text-light-on-surface-container" aria-label="Breadcrumb">
+        <a href="#dashboard" class="hover:text-text-main">Customer Portal</a>
+        <span class="material-symbols-outlined text-title-md">chevron_right</span>
+        <a href="#tickets" class="hover:text-text-main">Tickets</a>
+        <span class="material-symbols-outlined text-title-md">chevron_right</span>
+        <span class="text-text-main font-semibold">New Ticket Submission</span>
+      </nav>
+
+      <div class="flex items-center gap-3">
+        <span class="inline-flex items-center gap-1.5 text-body-sm text-text-main bg-light-surface-container px-3 py-1.5 rounded border border-border-subtle">
+          <span class="w-2 h-2 rounded-full bg-success"></span>
+          <span>Average First Response: <strong>24 mins</strong></span>
+        </span>
+      </div>
+    </header>
+
+    <!-- Submission Form Container -->
+    <main class="p-8 max-w-4xl w-full mx-auto space-y-8 flex-1">
+      
+      <!-- Heading -->
+      <div>
+        <h1 class="font-headline text-headline-xl text-text-main tracking-tight">Submit a Support Ticket</h1>
+        <p class="text-body-md text-light-on-surface-container mt-1">Please provide clear details so our engineering and support specialists can triage and resolve your request rapidly.</p>
+      </div>
+
+      <!-- Success Confirmation Toast / Banner Demo -->
+      <div class="bg-success-surface border border-green-200 rounded-md p-4 flex items-start gap-3">
+        <span class="material-symbols-outlined text-success text-headline-lg shrink-0">check_circle</span>
+        <div class="flex-1 text-body-sm text-success">
+          <strong class="font-semibold text-text-main block">Ticket Submission Ready</strong>
+          Your previous request (<strong>TCK-1001</strong>) was routed to Sarah Jenkins and is currently In Progress.
+        </div>
+      </div>
+
+      <!-- Main Form Card -->
+      <form class="bg-light-surface rounded-lg border border-border-subtle shadow-sm p-8 space-y-6" onsubmit="event.preventDefault();">
+        
+        <!-- Ticket Title -->
+        <div class="space-y-1.5">
+          <label class="block font-label text-label-md text-text-main" for="title">
+            Ticket Title <span class="text-error">*</span>
+          </label>
+          <input id="title" type="text" required value="SSO SAML login redirection error on Chrome enterprise" class="w-full px-4 py-2.5 border border-border-subtle rounded text-body-md text-text-main bg-light-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="e.g. Cannot process credit card invoice on checkout">
+          <p class="text-body-sm text-light-on-surface-container">A concise summary of the issue (at least 10 characters).</p>
+        </div>
+
+        <!-- 2-Column Selects: Category & Priority -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          <!-- Category Dropdown -->
+          <div class="space-y-1.5">
+            <label class="block font-label text-label-md text-text-main" for="category">
+              Category <span class="text-error">*</span>
+            </label>
+            <div class="relative">
+              <select id="category" class="w-full px-4 py-2.5 border border-border-subtle rounded text-body-md text-text-main bg-light-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none cursor-pointer">
+                <option value="tech" selected>Technical Issue</option>
+                <option value="billing">Billing &amp; Invoices</option>
+                <option value="account">Account Problem</option>
+                <option value="feature">Feature Request</option>
+                <option value="other">Other Inquiries</option>
+              </select>
+              <span class="material-symbols-outlined absolute right-3 top-3 text-light-on-surface-container pointer-events-none">expand_more</span>
+            </div>
+            <p class="text-body-sm text-light-on-surface-container">Routes your ticket to the specialized department.</p>
+          </div>
+
+          <!-- Priority Dropdown -->
+          <div class="space-y-1.5">
+            <label class="block font-label text-label-md text-text-main" for="priority">
+              Priority Level <span class="text-error">*</span>
+            </label>
+            <div class="relative">
+              <select id="priority" class="w-full px-4 py-2.5 border border-border-subtle rounded text-body-md text-text-main bg-light-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary appearance-none cursor-pointer">
+                <option value="urgent" selected>Urgent (Service Outage / Blocker)</option>
+                <option value="high">High (Major Feature Impaired)</option>
+                <option value="medium">Medium (Normal Operational Issue)</option>
+                <option value="low">Low (Cosmetic or Minor Inquiry)</option>
+              </select>
+              <span class="material-symbols-outlined absolute right-3 top-3 text-light-on-surface-container pointer-events-none">expand_more</span>
+            </div>
+            <p class="text-body-sm text-light-on-surface-container">High and Urgent priorities notify on-call support engineers.</p>
+          </div>
+
+        </div>
+
+        <!-- Description Textarea -->
+        <div class="space-y-1.5">
+          <div class="flex items-center justify-between">
+            <label class="block font-label text-label-md text-text-main" for="description">
+              Detailed Description <span class="text-error">*</span>
+            </label>
+            <span class="text-body-sm text-light-on-surface-container">Markdown supported</span>
+          </div>
+          <textarea id="description" rows="6" required class="w-full p-4 border border-border-subtle rounded text-body-md text-text-main bg-light-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="Describe the steps to reproduce the issue, what you expected to happen, and actual error messages...">Our team members using Okta Single Sign-On are encountering an endless redirect loop when navigating to the admin workspace after 9:00 AM today. 
+
+Steps to reproduce:
+1. Navigate to https://acme.helpdesk.com/sso
+2. Authenticate through Okta 2FA prompt
+3. Browser attempts callback to /auth/callback and throws HTTP 500 error
+
+This is currently blocking 12 healthcare administrative team members from logging in.</textarea>
+        </div>
+
+        <!-- File Attachment Upload Area -->
+        <div class="space-y-2">
+          <label class="block font-label text-label-md text-text-main">Attachments &amp; Screenshots</label>
+          
+          <div class="border-2 border-dashed border-border-subtle hover:border-primary rounded-lg p-6 text-center bg-light-surface-container transition-colors cursor-pointer">
+            <div class="max-w-xs mx-auto space-y-2">
+              <span class="material-symbols-outlined text-headline-xl text-primary">cloud_upload</span>
+              <div>
+                <p class="font-label text-label-md text-text-main">
+                  <span class="text-primary hover:underline font-semibold">Upload a file</span> or drag and drop
+                </p>
+                <p class="text-body-sm text-light-on-surface-container">PNG, JPG, PDF, or HAR log up to 25MB each</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- Staged file preview list -->
+          <div class="space-y-2 pt-2">
+            <div class="flex items-center justify-between p-3 bg-light-surface rounded border border-border-subtle">
+              <div class="flex items-center gap-3">
+                <span class="material-symbols-outlined text-primary text-title-md">image</span>
+                <div>
+                  <p class="font-label text-label-md text-text-main">okta_auth_500_loop.png</p>
+                  <p class="text-body-sm text-light-on-surface-container">1.4 MB · Upload complete</p>
+                </div>
+              </div>
+              <button type="button" class="text-light-on-surface-container hover:text-error p-1 rounded" aria-label="Remove attachment">
+                <span class="material-symbols-outlined text-title-md">delete</span>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="pt-6 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-end gap-3">
+          <a href="#dashboard" class="w-full sm:w-auto px-5 py-2.5 border border-border-subtle rounded text-label-md font-label text-text-main hover:bg-light-surface-container text-center transition-colors">
+            Cancel
+          </a>
+          <button type="submit" class="w-full sm:w-auto px-6 py-2.5 bg-primary hover:bg-primary-hover text-on-primary rounded font-label text-label-lg shadow-sm flex items-center justify-center gap-2 transition-colors duration-state-change">
+            <span class="material-symbols-outlined text-title-md">send</span>
+            <span>Submit Support Ticket</span>
+          </button>
+        </div>
+
+      </form>
+
+    </main>
+
+  </div>
+
+
+
+</body></html>

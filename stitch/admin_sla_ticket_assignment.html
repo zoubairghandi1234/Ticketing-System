@@ -1,0 +1,508 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpDesk — Administrator SLA &amp; Ticket Assignment</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#1D4ED8',
+        'primary-hover': '#1E40AF',
+        'primary-subtle': '#EFF6FF',
+        'on-primary': '#FFFFFF',
+        'nav-dark': '#111827',
+        'nav-border': '#1F2937',
+        'text-main': '#0F172A',
+        'text-muted': '#64748B',
+        'border-subtle': '#E2E8F0',
+        'success': '#166534',
+        'success-surface': '#DCFCE7',
+        'warning': '#9A3412',
+        'warning-surface': '#FFEDD5',
+        'error': '#991B1B',
+        'error-surface': '#FEE2E2',
+        'info': '#1E40AF',
+        'info-surface': '#DBEAFE',
+        'light-surface': '#FFFFFF',
+        'light-on-surface': '#0F172A',
+        'light-surface-container': '#F8FAFC',
+        'light-on-surface-container': '#334155',
+        'light-outline': '#CBD5E1',
+        'dark-surface': '#111827',
+        'dark-on-surface': '#F8FAFC',
+        'dark-surface-container': '#1F2937',
+        'dark-on-surface-container': '#E2E8F0',
+        'dark-outline': '#374151',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Red Hat Text"', 'sans-serif'],
+        'headline': ['"Red Hat Text"', 'sans-serif'],
+        'title': ['"Red Hat Text"', 'sans-serif'],
+        'body': ['"Instrument Sans"', 'sans-serif'],
+        'label': ['"Instrument Sans"', 'sans-serif'],
+        'code': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-xl': ['28px', { lineHeight: '36px', fontWeight: '700' }],
+        'headline-xl-mobile': ['22px', { lineHeight: '28px', fontWeight: '700' }],
+        'headline-lg': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-lg-mobile': ['18px', { lineHeight: '24px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'code-sm': ['12px', { lineHeight: '16px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+        'surface-exit': '140ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;family=Red+Hat+Text:wght@500;600;700&amp;family=Spline+Sans+Mono:wght@500&amp;display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-light-surface-container font-body text-text-main min-h-[1024px] flex flex-col md:flex-row" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+  <!-- Fixed Role-Based Navigation Sidebar (Administrator View) -->
+  <aside class="w-full md:w-64 bg-nav-dark text-on-primary flex-shrink-0 md:min-h-[1024px] flex flex-col justify-between border-r border-nav-border z-20" data-stitch-vh="md:min-h-[1024px]===md:min-h-screen">
+    <div>
+      <div class="h-16 px-6 flex items-center justify-between border-b border-nav-border">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary shadow-sm">
+            <span class="material-symbols-outlined text-headline-lg">admin_panel_settings</span>
+          </div>
+          <div>
+            <span class="font-headline text-title-md font-bold tracking-tight text-white block leading-tight">HelpDesk</span>
+            <span class="font-label text-label-sm text-amber-300 uppercase tracking-wider block font-semibold">Super Admin</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Admin Navigation Links -->
+      <nav class="p-3 space-y-1 text-body-sm" aria-label="Administrator Navigation">
+        <a href="../admin-analytics/AdminAnalytics.html" class="flex items-center gap-3 px-3 py-2 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#sla" class="flex items-center justify-between px-3 py-2 rounded bg-primary text-white font-label text-label-md transition-colors shadow-sm">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-title-md">verified</span>
+            <span>SLA &amp; Assignment</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-label-sm font-bold bg-green-700 text-white">98.4%</span>
+        </a>
+        <a href="#users" class="flex items-center gap-3 px-3 py-2 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">manage_accounts</span>
+          <span>User Management</span>
+        </a>
+        <a href="#agents" class="flex items-center gap-3 px-3 py-2 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">support_agent</span>
+          <span>Agent Performance</span>
+        </a>
+        <a href="#audit" class="flex items-center gap-3 px-3 py-2 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">history</span>
+          <span>Audit Logs</span>
+        </a>
+        <a href="#settings" class="flex items-center gap-3 px-3 py-2 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">settings</span>
+          <span>Settings</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Admin User Footer -->
+    <div class="p-4 border-t border-nav-border">
+      <div class="flex items-center justify-between px-2 py-2">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-amber-400 text-nav-dark font-bold flex items-center justify-center text-label-md shadow-sm">
+            DS
+          </div>
+          <div class="overflow-hidden">
+            <p class="font-label text-label-md text-white truncate">David Sterling</p>
+            <p class="text-body-sm text-gray-300 truncate">Director of Support Ops</p>
+          </div>
+        </div>
+        <button type="button" aria-label="Sign out" class="text-gray-300 hover:text-white p-1.5 rounded hover:bg-gray-800 transition-colors">
+          <span class="material-symbols-outlined text-title-md">logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Workspace Shell -->
+  <div class="flex-1 flex flex-col min-w-0">
+    
+    <!-- Top Global Header -->
+    <header class="h-16 bg-light-surface border-b border-border-subtle px-8 flex items-center justify-between sticky top-0 z-10">
+      
+      <div class="flex items-center gap-4 w-96">
+        <div class="relative w-full">
+          <span class="material-symbols-outlined absolute left-3 top-2.5 text-light-on-surface-container text-title-md">search</span>
+          <input type="text" placeholder="Search tickets, SLAs, or agent reassignments..." class="w-full pl-9 pr-4 py-2 bg-light-surface-container border border-border-subtle rounded text-body-md text-text-main focus:bg-light-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <button type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2 border border-border-subtle rounded text-label-md font-label text-text-main hover:bg-light-surface-container transition-colors">
+          <span class="material-symbols-outlined text-title-md">tune</span>
+          <span>Configure SLA Policies</span>
+        </button>
+        <button type="button" class="inline-flex items-center gap-1.5 px-3.5 py-2 bg-primary hover:bg-primary-hover text-on-primary rounded text-label-md font-label shadow-sm transition-colors">
+          <span class="material-symbols-outlined text-title-md">rule</span>
+          <span>Auto-Assign Queue</span>
+        </button>
+      </div>
+
+    </header>
+
+    <!-- Page Body -->
+    <main class="p-8 max-w-7xl w-full mx-auto space-y-8 flex-1">
+      
+      <!-- Heading & Operational Target Banner -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="font-headline text-headline-xl text-text-main tracking-tight">SLA Performance &amp; Ticket Assignment</h1>
+          <p class="text-body-md text-light-on-surface-container">Enforce first response and resolution targets across Enterprise, Pro, and Standard customer tiers.</p>
+        </div>
+
+        <div class="flex items-center gap-3 bg-light-surface px-4 py-2 rounded-lg border border-border-subtle shadow-sm">
+          <span class="material-symbols-outlined text-success text-headline-lg">verified</span>
+          <div>
+            <p class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider">Overall SLA Compliance</p>
+            <p class="font-headline text-title-md text-text-main font-bold">98.4% (Goal &gt; 98.0%)</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 SLA Tier Metric Cards -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        
+        <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-label text-label-md text-text-main font-bold flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Enterprise Tier SLA
+            </span>
+            <span class="px-2 py-0.5 rounded text-label-sm font-semibold bg-emerald-50 text-emerald-800 border border-emerald-200">On Track</span>
+          </div>
+          <div class="space-y-1.5 my-3 text-body-sm text-light-on-surface-container">
+            <p class="flex justify-between"><span>First Response Target:</span> <strong class="text-text-main">&lt; 15 mins</strong></p>
+            <p class="flex justify-between"><span>Resolution Target:</span> <strong class="text-text-main">&lt; 4 hours</strong></p>
+            <p class="flex justify-between"><span>Actual Median Response:</span> <strong class="text-success font-semibold">12m 40s</strong></p>
+          </div>
+          <div class="w-full bg-light-surface-container rounded-full h-2 overflow-hidden">
+            <div class="bg-emerald-600 h-full rounded-full" style="width: 99.2%"></div>
+          </div>
+        </div>
+
+        <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-label text-label-md text-text-main font-bold flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> Business Pro Tier SLA
+            </span>
+            <span class="px-2 py-0.5 rounded text-label-sm font-semibold bg-blue-50 text-blue-800 border border-blue-200">On Track</span>
+          </div>
+          <div class="space-y-1.5 my-3 text-body-sm text-light-on-surface-container">
+            <p class="flex justify-between"><span>First Response Target:</span> <strong class="text-text-main">&lt; 1 hour</strong></p>
+            <p class="flex justify-between"><span>Resolution Target:</span> <strong class="text-text-main">&lt; 12 hours</strong></p>
+            <p class="flex justify-between"><span>Actual Median Response:</span> <strong class="text-primary font-semibold">34m 10s</strong></p>
+          </div>
+          <div class="w-full bg-light-surface-container rounded-full h-2 overflow-hidden">
+            <div class="bg-primary h-full rounded-full" style="width: 98.1%"></div>
+          </div>
+        </div>
+
+        <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-2">
+            <span class="font-label text-label-md text-text-main font-bold flex items-center gap-1.5">
+              <span class="w-2.5 h-2.5 rounded-full bg-amber-500"></span> Standard Tier SLA
+            </span>
+            <span class="px-2 py-0.5 rounded text-label-sm font-semibold bg-amber-50 text-amber-800 border border-amber-200">Watch</span>
+          </div>
+          <div class="space-y-1.5 my-3 text-body-sm text-light-on-surface-container">
+            <p class="flex justify-between"><span>First Response Target:</span> <strong class="text-text-main">&lt; 4 hours</strong></p>
+            <p class="flex justify-between"><span>Resolution Target:</span> <strong class="text-text-main">&lt; 24 hours</strong></p>
+            <p class="flex justify-between"><span>Actual Median Response:</span> <strong class="text-amber-700 font-semibold">2h 45m</strong></p>
+          </div>
+          <div class="w-full bg-light-surface-container rounded-full h-2 overflow-hidden">
+            <div class="bg-amber-500 h-full rounded-full" style="width: 96.8%"></div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Administrator Live Ticket Assignment & Reassignment Workspace Table -->
+      <section class="bg-light-surface rounded-md border border-border-subtle shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h2 class="font-headline text-title-md text-text-main">Live Queue Routing &amp; Agent Reassignment</h2>
+            <p class="text-body-sm text-light-on-surface-container">Supervise queue load, reassign tickets between agents, and prevent SLA breaches</p>
+          </div>
+
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
+              <span class="text-body-sm text-light-on-surface-container">Queue View:</span>
+              <select class="text-body-sm bg-light-surface-container border border-border-subtle rounded px-2.5 py-1.5 text-text-main">
+                <option>All 42 Open Tickets</option>
+                <option>5 Unassigned Tickets</option>
+                <option>Tickets Approaching Deadline</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-light-surface-container border-b border-border-subtle text-light-on-surface-container">
+              <tr>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Ticket ID</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Customer &amp; Plan</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Subject</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">SLA Status</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Time Remaining</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Current Assignee</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider">Agent Load</th>
+                <th scope="col" class="py-3 px-4 font-label text-label-sm uppercase tracking-wider text-right">Admin Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border-subtle text-body-md text-text-main">
+              
+              <!-- Row 1: Approaching Deadline -->
+              <tr class="hover:bg-light-surface-container transition-colors bg-amber-50/20">
+                <td class="py-3.5 px-4 font-code text-code-sm text-primary font-bold">TCK-1001</td>
+                <td class="py-3.5 px-4">
+                  <p class="font-semibold text-text-main">Elena Rostova</p>
+                  <p class="text-body-sm text-light-on-surface-container">Acme Health · Enterprise</p>
+                </td>
+                <td class="py-3.5 px-4 font-medium text-text-main text-balance">
+                  SSO SAML login redirection error
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-amber-100 text-amber-900 border border-amber-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-amber-600 animate-ping"></span> Approaching
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="font-code text-code-sm text-amber-700 font-bold">18m 12s</span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-[10px]">SJ</div>
+                    <span class="font-semibold text-text-main">Sarah Jenkins</span>
+                  </div>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="text-body-sm text-text-main font-semibold">7 tickets</span>
+                </td>
+                <td class="py-3.5 px-4 text-right">
+                  <button type="button" class="px-3 py-1.5 bg-light-surface border border-border-subtle text-primary hover:bg-primary-subtle rounded text-label-md font-label font-semibold">
+                    Reassign
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Row 2: Unassigned Urgent -->
+              <tr class="hover:bg-light-surface-container transition-colors">
+                <td class="py-3.5 px-4 font-code text-code-sm text-primary font-bold">TCK-1003</td>
+                <td class="py-3.5 px-4">
+                  <p class="font-semibold text-text-main">Devon Zhao</p>
+                  <p class="text-body-sm text-light-on-surface-container">CloudGrid · Pro</p>
+                </td>
+                <td class="py-3.5 px-4 font-medium text-text-main text-balance">
+                  API rate limiting returning 429 prematurely
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-red-100 text-red-900 border border-red-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-red-600 animate-ping"></span> Urgent Triage
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="font-code text-code-sm text-error font-bold">24m 00s</span>
+                </td>
+                <td class="py-3.5 px-4 text-light-on-surface-container italic font-medium">
+                  Unassigned
+                </td>
+                <td class="py-3.5 px-4 text-light-on-surface-container">—</td>
+                <td class="py-3.5 px-4 text-right whitespace-nowrap">
+                  <button type="button" class="px-3 py-1.5 bg-primary hover:bg-primary-hover text-on-primary rounded text-label-md font-label shadow-sm font-semibold whitespace-nowrap">
+                    Assign Agent
+                  </button>
+                </td>
+              </tr>
+
+              <!-- Row 3: On Track -->
+              <tr class="hover:bg-light-surface-container transition-colors">
+                <td class="py-3.5 px-4 font-code text-code-sm text-primary font-bold">TCK-1004</td>
+                <td class="py-3.5 px-4">
+                  <p class="font-semibold text-text-main">Kenji Takahashi</p>
+                  <p class="text-body-sm text-light-on-surface-container">Nexus Data · Growth</p>
+                </td>
+                <td class="py-3.5 px-4 font-medium text-text-main text-balance">
+                  Request for HIPAA Compliance BAA agreement
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-green-100 text-green-900 border border-green-200">
+                    <span class="w-1.5 h-1.5 rounded-full bg-green-600"></span> On Track
+                  </span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="font-code text-code-sm text-success font-bold">3h 22m</span>
+                </td>
+                <td class="py-3.5 px-4">
+                  <div class="flex items-center gap-2">
+                    <div class="w-6 h-6 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-[10px]">MV</div>
+                    <span class="font-semibold text-text-main">Marcus Vance</span>
+                  </div>
+                </td>
+                <td class="py-3.5 px-4">
+                  <span class="text-body-sm text-text-main font-semibold">9 tickets</span>
+                </td>
+                <td class="py-3.5 px-4 text-right">
+                  <button type="button" class="px-3 py-1.5 bg-light-surface border border-border-subtle text-primary hover:bg-primary-subtle rounded text-label-md font-label font-semibold">
+                    Reassign
+                  </button>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <!-- Assignment Modal & Audit Log Preview Grid -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+        
+        <!-- Live Admin Assignment Modal Representation (6 cols) -->
+        <div class="lg:col-span-6 bg-light-surface rounded-md border border-border-subtle shadow-md p-6 space-y-4">
+          <div class="flex items-start justify-between border-b border-border-subtle pb-3">
+            <div>
+              <span class="text-label-sm uppercase font-semibold text-primary font-label">Interactive Assignment Dialog</span>
+              <h3 class="font-headline text-title-md text-text-main">Assign Ticket TCK-1003</h3>
+              <p class="text-body-sm text-light-on-surface-container">Select an active support engineer based on current capacity</p>
+            </div>
+            <span class="px-2 py-0.5 rounded text-label-sm font-semibold bg-red-100 text-red-900">Urgent SLA</span>
+          </div>
+
+          <div class="space-y-2.5">
+            <label class="block font-label text-label-sm text-light-on-surface-container uppercase">Recommended Active Agents</label>
+            
+            <div class="p-3 rounded border-2 border-primary bg-primary-subtle/30 flex items-center justify-between cursor-pointer">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-purple-600 text-white font-bold flex items-center justify-center text-label-sm">LG</div>
+                <div>
+                  <p class="font-semibold text-body-sm text-text-main">Liam Gallagher · Security Specialist</p>
+                  <p class="text-body-sm text-light-on-surface-container text-label-sm">Current Load: 4 of 12 tickets</p>
+                </div>
+              </div>
+              <span class="text-label-sm font-bold text-success bg-green-100 px-2 py-0.5 rounded">High Availability</span>
+            </div>
+
+            <div class="p-3 rounded border border-border-subtle hover:border-gray-400 bg-light-surface flex items-center justify-between cursor-pointer">
+              <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-label-sm">SJ</div>
+                <div>
+                  <p class="font-semibold text-body-sm text-text-main">Sarah Jenkins · Tier 2 Lead</p>
+                  <p class="text-body-sm text-light-on-surface-container text-label-sm">Current Load: 7 of 12 tickets</p>
+                </div>
+              </div>
+              <span class="text-label-sm font-semibold text-text-main bg-light-surface-container px-2 py-0.5 rounded">Medium Load</span>
+            </div>
+          </div>
+
+          <div class="pt-3 border-t border-border-subtle flex items-center justify-end gap-3">
+            <button type="button" class="px-4 py-2 border border-border-subtle rounded text-label-md font-label text-text-main hover:bg-light-surface-container">Cancel</button>
+            <button type="button" class="px-4 py-2 bg-primary hover:bg-primary-hover text-on-primary rounded text-label-md font-label shadow-sm font-semibold">Confirm Assignment to Liam</button>
+          </div>
+        </div>
+
+        <!-- Audit Trail Log (6 cols) -->
+        <div class="lg:col-span-6 bg-light-surface rounded-md border border-border-subtle shadow-md p-6 space-y-4">
+          <div class="flex items-center justify-between border-b border-border-subtle pb-3">
+            <div>
+              <h3 class="font-headline text-title-md text-text-main">Operational Audit Log</h3>
+              <p class="text-body-sm text-light-on-surface-container">Immutable chronological event trail</p>
+            </div>
+            <a href="#audit" class="font-label text-label-md text-primary hover:text-primary-hover font-semibold">Full Log</a>
+          </div>
+
+          <div class="divide-y divide-border-subtle text-body-sm">
+            <div class="py-2.5 flex items-start gap-3">
+              <span class="material-symbols-outlined text-primary text-title-md mt-0.5">swap_horiz</span>
+              <div class="flex-1">
+                <p class="text-text-main font-semibold">Ticket TCK-1002 reassigned to Marcus Vance</p>
+                <p class="text-light-on-surface-container text-label-sm">By David Sterling (Admin) · 12m ago</p>
+              </div>
+            </div>
+
+            <div class="py-2.5 flex items-start gap-3">
+              <span class="material-symbols-outlined text-warning text-title-md mt-0.5">warning</span>
+              <div class="flex-1">
+                <p class="text-text-main font-semibold">SLA Warning: TCK-1001 passed 80% duration threshold</p>
+                <p class="text-light-on-surface-container text-label-sm">Automated SLA Monitor · 28m ago</p>
+              </div>
+            </div>
+
+            <div class="py-2.5 flex items-start gap-3">
+              <span class="material-symbols-outlined text-success text-title-md mt-0.5">check_circle</span>
+              <div class="flex-1">
+                <p class="text-text-main font-semibold">Enterprise SLA policy v2.4 deployed</p>
+                <p class="text-light-on-surface-container text-label-sm">By David Sterling · 2h ago</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </main>
+
+  </div>
+
+
+
+</body></html>

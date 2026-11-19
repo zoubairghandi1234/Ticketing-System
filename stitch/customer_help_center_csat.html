@@ -1,0 +1,361 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpDesk — Customer Help Center &amp; Ticket Feedback</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#1D4ED8',
+        'primary-hover': '#1E40AF',
+        'primary-subtle': '#EFF6FF',
+        'on-primary': '#FFFFFF',
+        'nav-dark': '#111827',
+        'nav-border': '#1F2937',
+        'text-main': '#0F172A',
+        'text-muted': '#64748B',
+        'border-subtle': '#E2E8F0',
+        'success': '#166534',
+        'success-surface': '#DCFCE7',
+        'warning': '#9A3412',
+        'warning-surface': '#FFEDD5',
+        'error': '#991B1B',
+        'error-surface': '#FEE2E2',
+        'info': '#1E40AF',
+        'info-surface': '#DBEAFE',
+        'light-surface': '#FFFFFF',
+        'light-on-surface': '#0F172A',
+        'light-surface-container': '#F8FAFC',
+        'light-on-surface-container': '#334155',
+        'light-outline': '#CBD5E1',
+        'dark-surface': '#111827',
+        'dark-on-surface': '#F8FAFC',
+        'dark-surface-container': '#1F2937',
+        'dark-on-surface-container': '#E2E8F0',
+        'dark-outline': '#374151',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Red Hat Text"', 'sans-serif'],
+        'headline': ['"Red Hat Text"', 'sans-serif'],
+        'title': ['"Red Hat Text"', 'sans-serif'],
+        'body': ['"Instrument Sans"', 'sans-serif'],
+        'label': ['"Instrument Sans"', 'sans-serif'],
+        'code': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-xl': ['28px', { lineHeight: '36px', fontWeight: '700' }],
+        'headline-xl-mobile': ['22px', { lineHeight: '28px', fontWeight: '700' }],
+        'headline-lg': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-lg-mobile': ['18px', { lineHeight: '24px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'code-sm': ['12px', { lineHeight: '16px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+        'surface-exit': '140ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;family=Red+Hat+Text:wght@500;600;700&amp;family=Spline+Sans+Mono:wght@500&amp;display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-light-surface-container font-body text-text-main min-h-[1024px] flex flex-col md:flex-row" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+  <!-- Fixed Role-Based Navigation Sidebar (Customer View) -->
+  <aside class="w-full md:w-64 bg-nav-dark text-on-primary flex-shrink-0 md:min-h-[1024px] flex flex-col justify-between border-r border-nav-border z-20" data-stitch-vh="md:min-h-[1024px]===md:min-h-screen">
+    <div>
+      <div class="h-16 px-6 flex items-center justify-between border-b border-nav-border">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary shadow-sm">
+            <span class="material-symbols-outlined text-headline-lg">headset_mic</span>
+          </div>
+          <div>
+            <span class="font-headline text-title-md font-bold tracking-tight text-white block leading-tight">HelpDesk</span>
+            <span class="font-label text-label-sm text-gray-300 uppercase tracking-wider block">Customer Portal</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="p-4 space-y-1.5" aria-label="Customer Navigation">
+        <a href="../customer-dashboard/CustomerDashboard.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#my-tickets" class="flex items-center justify-between px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-title-md">confirmation_number</span>
+            <span>My Tickets</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-label-sm font-bold bg-gray-800 text-gray-200 border border-gray-700">4</span>
+        </a>
+        <a href="../create-ticket/CreateTicket.html" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">add_circle</span>
+          <span>Create Ticket</span>
+        </a>
+        <a href="#help-center" class="flex items-center gap-3 px-3.5 py-2.5 rounded bg-primary text-white font-label text-label-md transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-title-md">menu_book</span>
+          <span>Help &amp; Knowledge Base</span>
+        </a>
+        <a href="#profile" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">account_circle</span>
+          <span>Profile</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Customer User Footer -->
+    <div class="p-4 border-t border-nav-border">
+      <div class="flex items-center justify-between px-2 py-2">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-label-md">
+            ER
+          </div>
+          <div class="overflow-hidden">
+            <p class="font-label text-label-md text-white truncate">Elena Rostova</p>
+            <p class="text-body-sm text-gray-300 truncate">Acme Health</p>
+          </div>
+        </div>
+        <button type="button" aria-label="Sign out" class="text-gray-300 hover:text-white p-1.5 rounded hover:bg-gray-800 transition-colors">
+          <span class="material-symbols-outlined text-title-md">logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col min-w-0">
+    
+    <!-- Top Navbar -->
+    <header class="h-16 bg-light-surface border-b border-border-subtle px-8 flex items-center justify-between sticky top-0 z-10">
+      
+      <div class="flex items-center gap-4 w-96">
+        <div class="relative w-full">
+          <span class="material-symbols-outlined absolute left-3 top-2.5 text-light-on-surface-container text-title-md">search</span>
+          <input type="text" placeholder="Search help articles, guides, FAQs..." class="w-full pl-9 pr-4 py-2 bg-light-surface-container border border-border-subtle rounded text-body-md text-text-main focus:bg-light-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- New Ticket Quick Button -->
+        <a href="../create-ticket/CreateTicket.html" class="inline-flex items-center gap-2 px-3.5 py-2 bg-primary hover:bg-primary-hover text-on-primary font-label text-label-md rounded shadow-sm transition-colors">
+          <span class="material-symbols-outlined text-title-md">add</span>
+          <span>Contact Support</span>
+        </a>
+
+        <!-- Notifications with badge -->
+        <button type="button" class="p-2 text-text-main hover:text-primary hover:bg-light-surface-container rounded transition-colors relative" aria-label="Customer Notifications">
+          <span class="material-symbols-outlined text-headline-lg">notifications</span>
+          <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary ring-2 ring-white"></span>
+        </button>
+      </div>
+
+    </header>
+
+    <!-- Page Body -->
+    <main class="p-8 max-w-7xl w-full mx-auto space-y-8 flex-1">
+      
+      <!-- Resolved Ticket CSAT Rating Prompt Card Banner -->
+      <section class="bg-light-surface rounded-lg border-2 border-emerald-500 shadow-md p-6 space-y-4">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 border-b border-border-subtle pb-4">
+          <div class="flex items-center gap-3">
+            <span class="p-2.5 bg-emerald-100 text-emerald-800 rounded-full shrink-0">
+              <span class="material-symbols-outlined text-headline-lg">task_alt</span>
+            </span>
+            <div>
+              <span class="text-label-sm font-semibold text-emerald-800 uppercase font-label">Ticket Resolved · CSAT Survey</span>
+              <h2 class="font-headline text-title-md text-text-main">How satisfied are you with Sarah Jenkins&#39;s support on TCK-1001?</h2>
+              <p class="text-body-sm text-light-on-surface-container">&#34;SSO SAML login redirection error&#34; was resolved in 42 minutes.</p>
+            </div>
+          </div>
+          <span class="font-code text-code-sm px-2.5 py-1 rounded bg-light-surface-container border border-border-subtle font-bold text-primary">TCK-1001</span>
+        </div>
+
+        <!-- 5-Star Interactive Rating Picker -->
+        <form class="space-y-4" onsubmit="event.preventDefault();">
+          <div class="flex items-center gap-3">
+            <span class="font-label text-label-md text-text-main font-semibold">Your Rating:</span>
+            <div class="flex items-center gap-1 text-amber-400">
+              <button type="button" class="hover:scale-110 transition-transform p-1" aria-label="1 star">
+                <span class="material-symbols-outlined text-headline-lg" style="font-variation-settings: &#39;FILL&#39; 1;">star</span>
+              </button>
+              <button type="button" class="hover:scale-110 transition-transform p-1" aria-label="2 stars">
+                <span class="material-symbols-outlined text-headline-lg" style="font-variation-settings: &#39;FILL&#39; 1;">star</span>
+              </button>
+              <button type="button" class="hover:scale-110 transition-transform p-1" aria-label="3 stars">
+                <span class="material-symbols-outlined text-headline-lg" style="font-variation-settings: &#39;FILL&#39; 1;">star</span>
+              </button>
+              <button type="button" class="hover:scale-110 transition-transform p-1" aria-label="4 stars">
+                <span class="material-symbols-outlined text-headline-lg" style="font-variation-settings: &#39;FILL&#39; 1;">star</span>
+              </button>
+              <button type="button" class="hover:scale-110 transition-transform p-1" aria-label="5 stars">
+                <span class="material-symbols-outlined text-headline-lg" style="font-variation-settings: &#39;FILL&#39; 1;">star</span>
+              </button>
+            </div>
+            <span class="text-label-sm font-semibold text-emerald-800 bg-emerald-50 px-2 py-0.5 rounded border border-emerald-200">5 - Extremely Satisfied</span>
+          </div>
+
+          <div>
+            <label class="block font-label text-label-md text-text-main mb-1.5" for="feedback">Optional Feedback</label>
+            <textarea id="feedback" rows="2" class="w-full px-3.5 py-2.5 border border-border-subtle rounded text-body-md text-text-main bg-light-surface-container focus:bg-light-surface focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Tell us what Sarah did well or how we can improve...">Sarah was extremely responsive, diagnosed the IdP cert renewal issue immediately, and verified the fix before closing the ticket. Excellent support!</textarea>
+          </div>
+
+          <div class="flex items-center justify-end gap-3 pt-2">
+            <button type="button" class="px-4 py-2 border border-border-subtle rounded text-label-md font-label text-text-main hover:bg-light-surface-container">Dismiss</button>
+            <button type="submit" class="px-5 py-2 bg-emerald-800 hover:bg-emerald-900 text-white rounded text-label-md font-label shadow-sm font-semibold">Submit Feedback</button>
+          </div>
+        </form>
+      </section>
+
+      <!-- Customer Self-Service Knowledge Base Categories -->
+      <section class="space-y-4">
+        <div>
+          <h2 class="font-headline text-headline-xl text-text-main tracking-tight">Customer Knowledge Base</h2>
+          <p class="text-body-md text-light-on-surface-container">Browse curated documentation, configuration guides, and billing instructions.</p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          
+          <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm hover:border-primary transition-colors cursor-pointer group">
+            <div class="w-10 h-10 rounded bg-primary-subtle text-primary flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-headline-lg">security</span>
+            </div>
+            <h3 class="font-headline text-title-md text-text-main mb-1">SSO &amp; Authentication</h3>
+            <p class="text-body-sm text-light-on-surface-container mb-3">Okta, Azure AD, SAML 2.0 configuration, and 2FA recovery.</p>
+            <span class="text-label-sm font-semibold text-primary inline-flex items-center gap-1">
+              <span>18 articles</span>
+              <span class="material-symbols-outlined text-body-sm">arrow_forward</span>
+            </span>
+          </div>
+
+          <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm hover:border-primary transition-colors cursor-pointer group">
+            <div class="w-10 h-10 rounded bg-blue-100 text-blue-700 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-headline-lg">credit_card</span>
+            </div>
+            <h3 class="font-headline text-title-md text-text-main mb-1">Billing &amp; Invoices</h3>
+            <p class="text-body-sm text-light-on-surface-container mb-3">Payment methods, seat upgrades, tax forms, and invoice downloads.</p>
+            <span class="text-label-sm font-semibold text-primary inline-flex items-center gap-1">
+              <span>12 articles</span>
+              <span class="material-symbols-outlined text-body-sm">arrow_forward</span>
+            </span>
+          </div>
+
+          <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm hover:border-primary transition-colors cursor-pointer group">
+            <div class="w-10 h-10 rounded bg-purple-100 text-purple-700 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-headline-lg">webhook</span>
+            </div>
+            <h3 class="font-headline text-title-md text-text-main mb-1">API &amp; Webhooks</h3>
+            <p class="text-body-sm text-light-on-surface-container mb-3">REST endpoints, rate limits, custom headers, and payload schemas.</p>
+            <span class="text-label-sm font-semibold text-primary inline-flex items-center gap-1">
+              <span>24 articles</span>
+              <span class="material-symbols-outlined text-body-sm">arrow_forward</span>
+            </span>
+          </div>
+
+          <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm hover:border-primary transition-colors cursor-pointer group">
+            <div class="w-10 h-10 rounded bg-amber-100 text-amber-700 flex items-center justify-center mb-3 group-hover:scale-105 transition-transform">
+              <span class="material-symbols-outlined text-headline-lg">help</span>
+            </div>
+            <h3 class="font-headline text-title-md text-text-main mb-1">Frequently Asked</h3>
+            <p class="text-body-sm text-light-on-surface-container mb-3">Common troubleshooting steps, account transfers, and SLAs.</p>
+            <span class="text-label-sm font-semibold text-primary inline-flex items-center gap-1">
+              <span>32 articles</span>
+              <span class="material-symbols-outlined text-body-sm">arrow_forward</span>
+            </span>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- Customer Activity & Notifications Center -->
+      <section class="bg-light-surface rounded-md border border-border-subtle shadow-sm p-6 space-y-4">
+        <div class="flex items-center justify-between border-b border-border-subtle pb-3">
+          <div>
+            <h3 class="font-headline text-title-md text-text-main">Recent Notifications &amp; Ticket Updates</h3>
+            <p class="text-body-sm text-light-on-surface-container">Stay informed when your dedicated agent replies or resolves a ticket</p>
+          </div>
+          <button type="button" class="text-label-md font-label text-primary hover:text-primary-hover font-semibold">Mark All Read</button>
+        </div>
+
+        <div class="divide-y divide-border-subtle text-body-sm">
+          <div class="py-3 flex items-start gap-4">
+            <span class="material-symbols-outlined text-success text-headline-lg mt-0.5">check_circle</span>
+            <div class="flex-1">
+              <p class="text-text-main font-semibold">Ticket TCK-1001 was marked as Resolved by Sarah Jenkins</p>
+              <p class="text-light-on-surface-container text-label-sm">Please verify the resolution and leave feedback · 42m ago</p>
+            </div>
+            <span class="w-2.5 h-2.5 rounded-full bg-primary ring-2 ring-white"></span>
+          </div>
+
+          <div class="py-3 flex items-start gap-4">
+            <span class="material-symbols-outlined text-primary text-headline-lg mt-0.5">forum</span>
+            <div class="flex-1">
+              <p class="text-text-main font-semibold">Sarah Jenkins replied to TCK-1001</p>
+              <p class="text-light-on-surface-container text-label-sm">&#34;I have refreshed the IdP metadata endpoint. Could you verify if you can now log in?&#34; · 1h ago</p>
+            </div>
+          </div>
+
+          <div class="py-3 flex items-start gap-4">
+            <span class="material-symbols-outlined text-text-main text-headline-lg mt-0.5">confirmation_number</span>
+            <div class="flex-1">
+              <p class="text-text-main font-semibold">Ticket TCK-1001 was assigned to Sarah Jenkins (Tier 2)</p>
+              <p class="text-light-on-surface-container text-label-sm">Initial response SLA scheduled · 2h ago</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+    </main>
+
+  </div>
+
+
+
+</body></html>

@@ -1,0 +1,480 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpDesk — Support Agent Ticket Workspace</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#1D4ED8',
+        'primary-hover': '#1E40AF',
+        'primary-subtle': '#EFF6FF',
+        'on-primary': '#FFFFFF',
+        'nav-dark': '#111827',
+        'nav-border': '#1F2937',
+        'text-main': '#0F172A',
+        'text-muted': '#64748B',
+        'border-subtle': '#E2E8F0',
+        'success': '#166534',
+        'success-surface': '#DCFCE7',
+        'warning': '#9A3412',
+        'warning-surface': '#FFEDD5',
+        'error': '#991B1B',
+        'error-surface': '#FEE2E2',
+        'info': '#1E40AF',
+        'info-surface': '#DBEAFE',
+        'light-surface': '#FFFFFF',
+        'light-on-surface': '#0F172A',
+        'light-surface-container': '#F8FAFC',
+        'light-on-surface-container': '#334155',
+        'light-outline': '#CBD5E1',
+        'dark-surface': '#111827',
+        'dark-on-surface': '#F8FAFC',
+        'dark-surface-container': '#1F2937',
+        'dark-on-surface-container': '#E2E8F0',
+        'dark-outline': '#374151',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Red Hat Text"', 'sans-serif'],
+        'headline': ['"Red Hat Text"', 'sans-serif'],
+        'title': ['"Red Hat Text"', 'sans-serif'],
+        'body': ['"Instrument Sans"', 'sans-serif'],
+        'label': ['"Instrument Sans"', 'sans-serif'],
+        'code': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-xl': ['28px', { lineHeight: '36px', fontWeight: '700' }],
+        'headline-xl-mobile': ['22px', { lineHeight: '28px', fontWeight: '700' }],
+        'headline-lg': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-lg-mobile': ['18px', { lineHeight: '24px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'code-sm': ['12px', { lineHeight: '16px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+        'surface-exit': '140ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;family=Red+Hat+Text:wght@500;600;700&amp;family=Spline+Sans+Mono:wght@500&amp;display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-light-surface-container font-body text-text-main min-h-[1024px] flex flex-col md:flex-row" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+  <!-- Fixed Role-Based Navigation Sidebar (Support Agent View) -->
+  <aside class="w-full md:w-64 bg-nav-dark text-on-primary flex-shrink-0 md:min-h-[1024px] flex flex-col justify-between border-r border-nav-border z-20" data-stitch-vh="md:min-h-[1024px]===md:min-h-screen">
+    <div>
+      <div class="h-16 px-6 flex items-center justify-between border-b border-nav-border">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary shadow-sm">
+            <span class="material-symbols-outlined text-headline-lg">headset_mic</span>
+          </div>
+          <div>
+            <span class="font-headline text-title-md font-bold tracking-tight text-white block leading-tight">HelpDesk</span>
+            <span class="font-label text-label-sm text-primary-subtle uppercase tracking-wider block font-semibold">Agent Ops</span>
+          </div>
+        </div>
+      </div>
+
+      <nav class="p-4 space-y-1.5" aria-label="Support Agent Navigation">
+        <a href="#dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#all-tickets" class="flex items-center justify-between px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-title-md">inbox</span>
+            <span>All Tickets</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-label-sm font-bold bg-gray-800 text-gray-200">42</span>
+        </a>
+        <a href="#assigned" class="flex items-center justify-between px-3.5 py-2.5 rounded bg-primary text-white font-label text-label-md transition-colors shadow-sm">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-title-md">assignment_ind</span>
+            <span>My Assigned</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-label-sm font-bold bg-blue-700 text-white">7</span>
+        </a>
+        <a href="#unassigned" class="flex items-center justify-between px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-title-md">pending_actions</span>
+            <span>Unassigned</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-label-sm font-bold bg-warning text-white">5</span>
+        </a>
+        <a href="#customers" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">group</span>
+          <span>Customers</span>
+        </a>
+        <a href="#profile" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">account_circle</span>
+          <span>Profile</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- Agent Identity in Footer -->
+    <div class="p-4 border-t border-nav-border">
+      <div class="flex items-center justify-between px-2 py-2">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center text-label-md ring-2 ring-emerald-500">
+            SJ
+          </div>
+          <div class="overflow-hidden">
+            <p class="font-label text-label-md text-white truncate">Sarah Jenkins</p>
+            <p class="text-body-sm text-gray-300 truncate">Tier 2 Senior Agent</p>
+          </div>
+        </div>
+        <button type="button" aria-label="Agent sign out" class="text-gray-300 hover:text-white p-1.5 rounded hover:bg-gray-800 transition-colors">
+          <span class="material-symbols-outlined text-title-md">logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Workspace Shell -->
+  <div class="flex-1 flex flex-col min-w-0">
+    
+    <!-- Top Action Bar -->
+    <header class="h-16 bg-light-surface border-b border-border-subtle px-6 flex items-center justify-between sticky top-0 z-10">
+      
+      <!-- Back & Ticket Identification -->
+      <div class="flex items-center gap-4">
+        <a href="#queue" class="p-2 text-text-main hover:text-primary hover:bg-light-surface-container rounded transition-colors" aria-label="Back to queue">
+          <span class="material-symbols-outlined text-headline-lg">arrow_back</span>
+        </a>
+        <div class="flex items-center gap-2">
+          <span class="font-code text-code-sm px-2.5 py-1 rounded bg-light-surface-container border border-border-subtle font-bold text-primary">TCK-1001</span>
+          <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-error-surface text-error">
+            <span class="material-symbols-outlined text-label-sm">keyboard_double_arrow_up</span> Urgent
+          </span>
+          <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-info-surface text-info">
+            <span class="w-1.5 h-1.5 rounded-full bg-info"></span> In Progress
+          </span>
+        </div>
+      </div>
+
+      <!-- Quick Action Buttons -->
+      <div class="flex items-center gap-2.5">
+        <button type="button" class="inline-flex items-center gap-1.5 px-3 py-1.5 border border-border-subtle rounded text-label-md font-label text-text-main hover:bg-light-surface-container transition-colors">
+          <span class="material-symbols-outlined text-title-md">person_add</span>
+          <span>Reassign</span>
+        </button>
+        <button type="button" class="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-success hover:bg-green-700 text-white rounded text-label-md font-label shadow-sm transition-colors">
+          <span class="material-symbols-outlined text-title-md">check_circle</span>
+          <span>Resolve Ticket</span>
+        </button>
+      </div>
+
+    </header>
+
+    <!-- Ticket Workspace Body (Split 2-Column: Left Conversation & Composer, Right Sidebar Inspector) -->
+    <div class="flex-1 grid grid-cols-1 lg:grid-cols-12 min-h-0 overflow-hidden">
+      
+      <!-- Left Column: Main Conversation & Activity (8 cols) -->
+      <main class="lg:col-span-8 p-6 lg:p-8 space-y-6 overflow-y-auto">
+        
+        <!-- Ticket Title & Customer Header -->
+        <div class="bg-light-surface p-6 rounded-lg border border-border-subtle shadow-sm space-y-3">
+          <h1 class="font-headline text-headline-lg text-text-main tracking-tight text-balance">SSO SAML login redirection error on Chrome enterprise</h1>
+          
+          <div class="flex flex-wrap items-center gap-4 text-body-sm text-light-on-surface-container">
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-title-md">domain</span> Acme Health Inc.</span>
+            <span>•</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-title-md">category</span> Technical Issue</span>
+            <span>•</span>
+            <span class="flex items-center gap-1"><span class="material-symbols-outlined text-title-md">schedule</span> Created 42 mins ago</span>
+          </div>
+
+          <!-- Customer Initial Ticket Description -->
+          <div class="pt-3 border-t border-border-subtle text-body-md text-text-main leading-relaxed">
+            <p>Our team members using Okta Single Sign-On are encountering an endless redirect loop when navigating to the admin workspace after 9:00 AM today.</p>
+            <p class="mt-2 text-body-sm bg-light-surface-container p-3 rounded border border-border-subtle font-code text-text-main">
+              HTTP 500: SAML Callback Signature Mismatch at /auth/callback/okta-saml
+            </p>
+          </div>
+        </div>
+
+        <!-- Conversation Timeline Thread -->
+        <div class="space-y-4">
+          
+          <div class="flex items-center justify-between text-body-sm text-light-on-surface-container px-2">
+            <span class="font-label uppercase tracking-wider text-label-sm">Conversation History (3 updates)</span>
+            <span class="font-semibold text-text-main">SLA clock: 18m remaining</span>
+          </div>
+
+          <!-- Message 1: Customer -->
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center shrink-0 text-label-md">
+              ER
+            </div>
+            <div class="flex-1 bg-light-surface rounded-lg border border-border-subtle p-5 shadow-sm space-y-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="font-label text-label-md text-text-main">Elena Rostova</span>
+                  <span class="text-body-sm text-light-on-surface-container ml-2">Customer · Nov 19, 09:24 AM</span>
+                </div>
+                <span class="text-label-sm px-2 py-0.5 rounded bg-light-surface-container text-text-main font-medium">via Web Portal</span>
+              </div>
+              <p class="text-body-md text-text-main leading-relaxed">
+                Attached is the HAR trace and screenshot from Chrome Enterprise v128. It seems to happen specifically on accounts with enrolled MFA security keys.
+              </p>
+              <div class="flex items-center gap-3 pt-2">
+                <div class="flex items-center gap-2 px-3 py-1.5 bg-light-surface-container border border-border-subtle rounded text-body-sm text-text-main hover:bg-light-surface cursor-pointer">
+                  <span class="material-symbols-outlined text-primary text-title-md">attach_file</span>
+                  <span>okta_auth_500_loop.png (1.4 MB)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Message 2: Internal Note (Distinctly Styled Amber / Light Warning Surface) -->
+          <div class="flex items-start gap-4 pl-6 border-l-2 border-amber-400">
+            <div class="w-9 h-9 rounded-full bg-amber-500 text-white font-bold flex items-center justify-center shrink-0 text-label-sm">
+              <span class="material-symbols-outlined text-title-md">lock</span>
+            </div>
+            <div class="flex-1 bg-amber-50/70 border border-amber-200 rounded-lg p-4 shadow-sm space-y-1.5">
+              <div class="flex items-center justify-between">
+                <div class="flex items-center gap-2">
+                  <span class="font-label text-label-md text-amber-950 font-bold">Sarah Jenkins</span>
+                  <span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-bold bg-amber-200 text-amber-950">INTERNAL NOTE (Visible only to agents)</span>
+                </div>
+                <span class="text-body-sm text-amber-950 font-medium">Nov 19, 09:35 AM</span>
+              </div>
+              <p class="text-body-sm text-amber-950 leading-relaxed font-medium">
+                Checked Okta certificate validity. The Acme Health IdP metadata cert was auto-rotated last night. I will refresh the public key hash in the SSO configuration store to test.
+              </p>
+            </div>
+          </div>
+
+          <!-- Message 3: Agent Response to Customer -->
+          <div class="flex items-start gap-4">
+            <div class="w-10 h-10 rounded-full bg-indigo-600 text-white font-bold flex items-center justify-center shrink-0 text-label-md ring-2 ring-emerald-500">
+              SJ
+            </div>
+            <div class="flex-1 bg-primary-subtle/40 rounded-lg border border-blue-200 p-5 shadow-sm space-y-2">
+              <div class="flex items-center justify-between">
+                <div>
+                  <span class="font-label text-label-md text-text-main font-bold">Sarah Jenkins</span>
+                  <span class="text-body-sm text-light-on-surface-container ml-2">Support Agent · Nov 19, 09:41 AM</span>
+                </div>
+                <span class="text-label-sm px-2 py-0.5 rounded bg-blue-100 text-primary font-bold">Public Reply</span>
+              </div>
+              <p class="text-body-md text-text-main leading-relaxed">
+                Hello Elena, thank you for providing the diagnostic file. Our infrastructure team identified that your organization&#39;s SAML certificate renewed without propagating to the callback cache. I have re-synced the IdP metadata endpoint. Could you verify if you can now log in?
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Agent Response & Internal Note Composer -->
+        <div class="bg-light-surface rounded-lg border border-border-subtle shadow-sm overflow-hidden">
+          
+          <!-- Tab Mode Switcher -->
+          <div class="bg-light-surface-container px-4 pt-3 border-b border-border-subtle flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <button type="button" class="px-4 py-2 bg-light-surface border-t border-l border-r border-border-subtle rounded-t font-label text-label-md text-primary font-semibold flex items-center gap-2">
+                <span class="material-symbols-outlined text-title-md">reply</span>
+                <span>Reply to Customer</span>
+              </button>
+              <button type="button" class="px-4 py-2 text-light-on-surface-container hover:text-text-main rounded-t font-label text-label-md flex items-center gap-2">
+                <span class="material-symbols-outlined text-title-md">lock</span>
+                <span>Add Internal Note</span>
+              </button>
+            </div>
+            <span class="text-body-sm text-light-on-surface-container">Canned replies: <strong>Alt + C</strong></span>
+          </div>
+
+          <!-- Rich Textarea -->
+          <div class="p-4 space-y-3">
+            <textarea rows="4" class="w-full border-0 focus:ring-0 text-body-md text-text-main placeholder-light-on-surface-container resize-none focus:outline-none" placeholder="Type your response to Elena Rostova...">Thank you for verifying! I will mark this ticket resolved, but please reply directly if any users still experience redirection issues.</textarea>
+            
+            <!-- Composer Toolbar -->
+            <div class="pt-3 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-3">
+              <div class="flex items-center gap-2">
+                <button type="button" class="p-1.5 text-text-main hover:text-primary rounded hover:bg-light-surface-container" aria-label="Format Bold">
+                  <span class="material-symbols-outlined text-headline-lg">format_bold</span>
+                </button>
+                <button type="button" class="p-1.5 text-text-main hover:text-primary rounded hover:bg-light-surface-container" aria-label="Format Italic">
+                  <span class="material-symbols-outlined text-headline-lg">format_italic</span>
+                </button>
+                <button type="button" class="p-1.5 text-text-main hover:text-primary rounded hover:bg-light-surface-container" aria-label="Insert Code snippet">
+                  <span class="material-symbols-outlined text-headline-lg">code</span>
+                </button>
+                <button type="button" class="p-1.5 text-text-main hover:text-primary rounded hover:bg-light-surface-container" aria-label="Attach File">
+                  <span class="material-symbols-outlined text-headline-lg">attach_file</span>
+                </button>
+              </div>
+
+              <!-- Submit Reply -->
+              <div class="flex items-center gap-3">
+                <select class="text-body-sm bg-light-surface-container border border-border-subtle rounded px-2.5 py-1.5 text-text-main">
+                  <option>Set as Resolved</option>
+                  <option selected>Keep In Progress</option>
+                  <option>Set as Waiting for Customer</option>
+                </select>
+                <button type="button" class="px-4 py-2 bg-primary hover:bg-primary-hover text-on-primary font-label text-label-md rounded shadow-sm inline-flex items-center gap-2 transition-colors">
+                  <span>Send Reply</span>
+                  <span class="material-symbols-outlined text-title-md">send</span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+
+      <!-- Right Column: Ticket Properties & Customer Inspector (4 cols) -->
+      <aside class="lg:col-span-4 bg-light-surface border-l border-border-subtle p-6 space-y-6 overflow-y-auto">
+        
+        <!-- Ticket Meta Dropdowns & Quick Attributes -->
+        <div class="space-y-4">
+          <h2 class="font-headline text-title-md text-text-main pb-2 border-b border-border-subtle">Ticket Attributes</h2>
+          
+          <!-- Status Dropdown -->
+          <div class="space-y-1">
+            <label class="block font-label text-label-sm text-light-on-surface-container uppercase tracking-wider" for="status-select">Status</label>
+            <select id="status-select" class="w-full px-3 py-2 bg-light-surface-container border border-border-subtle rounded text-body-md text-text-main focus:outline-none focus:ring-1 focus:ring-primary font-semibold">
+              <option>Open</option>
+              <option selected>In Progress</option>
+              <option>Waiting for Customer</option>
+              <option>Resolved</option>
+              <option>Closed</option>
+            </select>
+          </div>
+
+          <!-- Priority Dropdown -->
+          <div class="space-y-1">
+            <label class="block font-label text-label-sm text-light-on-surface-container uppercase tracking-wider" for="priority-select">Priority</label>
+            <select id="priority-select" class="w-full px-3 py-2 bg-light-surface-container border border-border-subtle rounded text-body-md text-text-main focus:outline-none focus:ring-1 focus:ring-primary font-semibold text-error">
+              <option selected>Urgent (SLA: 1 hour)</option>
+              <option>High (SLA: 4 hours)</option>
+              <option>Medium (SLA: 24 hours)</option>
+              <option>Low (SLA: 48 hours)</option>
+            </select>
+          </div>
+
+          <!-- Assigned Agent Dropdown -->
+          <div class="space-y-1">
+            <label class="block font-label text-label-sm text-light-on-surface-container uppercase tracking-wider" for="agent-select">Assigned Agent</label>
+            <select id="agent-select" class="w-full px-3 py-2 bg-light-surface-container border border-border-subtle rounded text-body-md text-text-main focus:outline-none focus:ring-1 focus:ring-primary">
+              <option selected>Sarah Jenkins (Tier 2)</option>
+              <option>Marcus Vance (Tier 1)</option>
+              <option>Liam Gallagher (Security)</option>
+              <option>Unassigned</option>
+            </select>
+          </div>
+
+          <!-- Category -->
+          <div class="space-y-1">
+            <label class="block font-label text-label-sm text-light-on-surface-container uppercase tracking-wider" for="cat-select">Category</label>
+            <select id="cat-select" class="w-full px-3 py-2 bg-light-surface-container border border-border-subtle rounded text-body-md text-text-main focus:outline-none focus:ring-1 focus:ring-primary">
+              <option selected>Technical Issue</option>
+              <option>Billing</option>
+              <option>Account Problem</option>
+              <option>Feature Request</option>
+            </select>
+          </div>
+
+          <!-- Timestamps -->
+          <div class="pt-4 border-t border-border-subtle space-y-2 text-body-sm text-light-on-surface-container">
+            <div class="flex justify-between">
+              <span>Created:</span>
+              <span class="text-text-main font-semibold">Nov 19, 09:24 AM</span>
+            </div>
+            <div class="flex justify-between">
+              <span>Last Activity:</span>
+              <span class="text-text-main font-semibold">Nov 19, 09:41 AM</span>
+            </div>
+            <div class="flex justify-between">
+              <span>SLA Target:</span>
+              <span class="text-success font-semibold">Met (17m first reply)</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Customer Identity Card -->
+        <div class="p-4 bg-light-surface-container rounded-lg border border-border-subtle space-y-3">
+          <h3 class="font-headline text-title-md text-text-main">Customer Details</h3>
+          
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-label-md">
+              ER
+            </div>
+            <div>
+              <p class="font-label text-label-md text-text-main font-semibold">Elena Rostova</p>
+              <p class="text-body-sm text-light-on-surface-container">elena@novapulse.io</p>
+            </div>
+          </div>
+
+          <div class="space-y-1.5 pt-2 text-body-sm text-light-on-surface-container">
+            <p><strong class="text-text-main">Company:</strong> Acme Health Inc.</p>
+            <p><strong class="text-text-main">Plan:</strong> Enterprise Tier ($2,400/mo)</p>
+            <p><strong class="text-text-main">Total Tickets Logged:</strong> 14 tickets</p>
+            <p><strong class="text-text-main">Customer Since:</strong> January 2024</p>
+          </div>
+
+          <button type="button" class="w-full mt-2 py-1.5 px-3 bg-light-surface border border-border-subtle text-text-main hover:bg-gray-100 rounded text-label-md font-label transition-colors font-semibold">
+            View Full Customer Profile
+          </button>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+
+
+</body></html>

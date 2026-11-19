@@ -1,0 +1,471 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpDesk — Customer Portal</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#1D4ED8',
+        'primary-hover': '#1E40AF',
+        'primary-subtle': '#EFF6FF',
+        'on-primary': '#FFFFFF',
+        'nav-dark': '#111827',
+        'nav-border': '#1F2937',
+        'text-main': '#0F172A',
+        'text-muted': '#64748B',
+        'border-subtle': '#E2E8F0',
+        'success': '#166534',
+        'success-surface': '#DCFCE7',
+        'warning': '#9A3412',
+        'warning-surface': '#FFEDD5',
+        'error': '#991B1B',
+        'error-surface': '#FEE2E2',
+        'info': '#1E40AF',
+        'info-surface': '#DBEAFE',
+        'light-surface': '#FFFFFF',
+        'light-on-surface': '#0F172A',
+        'light-surface-container': '#F8FAFC',
+        'light-on-surface-container': '#334155',
+        'light-outline': '#CBD5E1',
+        'dark-surface': '#111827',
+        'dark-on-surface': '#F8FAFC',
+        'dark-surface-container': '#1F2937',
+        'dark-on-surface-container': '#E2E8F0',
+        'dark-outline': '#374151',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Red Hat Text"', 'sans-serif'],
+        'headline': ['"Red Hat Text"', 'sans-serif'],
+        'title': ['"Red Hat Text"', 'sans-serif'],
+        'body': ['"Instrument Sans"', 'sans-serif'],
+        'label': ['"Instrument Sans"', 'sans-serif'],
+        'code': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-xl': ['28px', { lineHeight: '36px', fontWeight: '700' }],
+        'headline-xl-mobile': ['22px', { lineHeight: '28px', fontWeight: '700' }],
+        'headline-lg': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-lg-mobile': ['18px', { lineHeight: '24px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'code-sm': ['12px', { lineHeight: '16px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+        'surface-exit': '140ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;family=Red+Hat+Text:wght@500;600;700&amp;family=Spline+Sans+Mono:wght@500&amp;display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-light-surface-container font-body text-text-main min-h-[1024px] flex flex-col md:flex-row" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+  <!-- Fixed Role-Based Navigation Sidebar (Dark Navy: #111827) -->
+  <aside class="w-full md:w-64 bg-nav-dark text-on-primary flex-shrink-0 md:min-h-[1024px] flex flex-col justify-between border-r border-nav-border z-20" data-stitch-vh="md:min-h-[1024px]===md:min-h-screen">
+    <div>
+      <!-- Brand Header -->
+      <div class="h-16 px-6 flex items-center justify-between border-b border-nav-border">
+        <div class="flex items-center gap-3">
+          <div class="w-8 h-8 rounded bg-primary flex items-center justify-center text-on-primary shadow-sm">
+            <span class="material-symbols-outlined text-headline-lg">headset_mic</span>
+          </div>
+          <div>
+            <span class="font-headline text-title-md font-bold tracking-tight text-white block leading-tight">HelpDesk</span>
+            <span class="font-label text-label-sm text-gray-300 uppercase tracking-wider block">Customer Portal</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Customer Navigation Links -->
+      <nav class="p-4 space-y-1.5" aria-label="Customer Navigation">
+        <a href="#dashboard" class="flex items-center gap-3 px-3.5 py-2.5 rounded bg-primary text-white font-label text-label-md transition-colors shadow-sm">
+          <span class="material-symbols-outlined text-title-md">dashboard</span>
+          <span>Dashboard</span>
+        </a>
+        <a href="#my-tickets" class="flex items-center justify-between px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <div class="flex items-center gap-3">
+            <span class="material-symbols-outlined text-title-md">confirmation_number</span>
+            <span>My Tickets</span>
+          </div>
+          <span class="px-2 py-0.5 rounded-full text-label-sm font-bold bg-gray-800 text-gray-200 border border-gray-700">4</span>
+        </a>
+        <a href="#create-ticket" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">add_circle</span>
+          <span>Create Ticket</span>
+        </a>
+        <a href="#profile" class="flex items-center gap-3 px-3.5 py-2.5 rounded text-gray-200 hover:text-white hover:bg-gray-800 font-label text-label-md transition-colors">
+          <span class="material-symbols-outlined text-title-md">account_circle</span>
+          <span>Profile</span>
+        </a>
+      </nav>
+    </div>
+
+    <!-- User / Session Footer -->
+    <div class="p-4 border-t border-nav-border">
+      <div class="flex items-center justify-between px-2 py-2">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-full bg-blue-600 text-white font-bold flex items-center justify-center text-label-md">
+            ER
+          </div>
+          <div class="overflow-hidden">
+            <p class="font-label text-label-md text-white truncate">Elena Rostova</p>
+            <p class="text-body-sm text-gray-300 truncate">Acme Health</p>
+          </div>
+        </div>
+        <button type="button" aria-label="Sign out" class="text-gray-300 hover:text-white p-1.5 rounded hover:bg-gray-800 transition-colors">
+          <span class="material-symbols-outlined text-title-md">logout</span>
+        </button>
+      </div>
+    </div>
+  </aside>
+
+  <!-- Main Content Area -->
+  <div class="flex-1 flex flex-col min-w-0">
+    
+    <!-- Top Navbar -->
+    <header class="h-16 bg-light-surface border-b border-border-subtle px-8 flex items-center justify-between sticky top-0 z-10">
+      <div class="flex items-center gap-4 w-96">
+        <div class="relative w-full">
+          <span class="material-symbols-outlined absolute left-3 top-2.5 text-text-muted text-title-md">search</span>
+          <input type="text" placeholder="Search my tickets or knowledge base..." class="w-full pl-9 pr-4 py-2 bg-light-surface-container border border-border-subtle rounded text-body-md text-text-main focus:bg-light-surface focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors">
+        </div>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <!-- New Ticket Quick Button -->
+        <a href="#create" class="inline-flex items-center gap-2 px-3.5 py-2 bg-primary hover:bg-primary-hover text-on-primary font-label text-label-md rounded shadow-sm transition-colors">
+          <span class="material-symbols-outlined text-title-md">add</span>
+          <span>Create New Ticket</span>
+        </a>
+
+        <!-- Notifications -->
+        <div class="relative">
+          <button type="button" class="p-2 text-text-main hover:text-primary hover:bg-light-surface-container rounded transition-colors relative" aria-label="Notifications">
+            <span class="material-symbols-outlined text-headline-lg">notifications</span>
+            <span class="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-primary ring-2 ring-white"></span>
+          </button>
+        </div>
+
+        <div class="h-6 w-px bg-border-subtle mx-1"></div>
+
+        <!-- Help Link -->
+        <button type="button" class="p-2 text-text-main hover:text-primary hover:bg-light-surface-container rounded transition-colors" aria-label="Documentation">
+          <span class="material-symbols-outlined text-headline-lg">help</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- Page Body -->
+    <main class="p-8 max-w-7xl w-full mx-auto space-y-8 flex-1">
+      
+      <!-- Welcome Heading & Banner -->
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 class="font-headline text-headline-xl text-text-main tracking-tight">Welcome back, Elena</h1>
+          <p class="text-body-md text-light-on-surface-container">Track open tickets, request technical assistance, or browse recent updates.</p>
+        </div>
+        <div class="flex items-center gap-2 text-body-sm text-text-main bg-light-surface px-3 py-1.5 rounded border border-border-subtle shadow-sm">
+          <span class="w-2 h-2 rounded-full bg-success"></span>
+          <span>Customer Service Desk is fully operational</span>
+        </div>
+      </div>
+
+      <!-- 4 Dashboard Metric Cards -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+        
+        <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider">Total Tickets</span>
+            <span class="p-2 rounded bg-primary-subtle text-primary">
+              <span class="material-symbols-outlined text-title-md">confirmation_number</span>
+            </span>
+          </div>
+          <div>
+            <h3 class="font-headline text-display-lg text-text-main tabular-nums">14</h3>
+            <p class="text-body-sm text-light-on-surface-container mt-1">Submitted in 2026</p>
+          </div>
+        </div>
+
+        <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider">Open Tickets</span>
+            <span class="p-2 rounded bg-warning-surface text-warning">
+              <span class="material-symbols-outlined text-title-md">hourglass_empty</span>
+            </span>
+          </div>
+          <div>
+            <h3 class="font-headline text-display-lg text-text-main tabular-nums">2</h3>
+            <p class="text-body-sm text-warning font-semibold mt-1">Awaiting agent triage</p>
+          </div>
+        </div>
+
+        <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider">In Progress</span>
+            <span class="p-2 rounded bg-info-surface text-info">
+              <span class="material-symbols-outlined text-title-md">sync</span>
+            </span>
+          </div>
+          <div>
+            <h3 class="font-headline text-display-lg text-text-main tabular-nums">2</h3>
+            <p class="text-body-sm text-info font-semibold mt-1">Sarah Jenkins working</p>
+          </div>
+        </div>
+
+        <div class="bg-light-surface p-5 rounded-md border border-border-subtle shadow-sm flex flex-col justify-between">
+          <div class="flex items-center justify-between mb-3">
+            <span class="font-label text-label-sm text-light-on-surface-container uppercase tracking-wider">Resolved Tickets</span>
+            <span class="p-2 rounded bg-success-surface text-success">
+              <span class="material-symbols-outlined text-title-md">check_circle</span>
+            </span>
+          </div>
+          <div>
+            <h3 class="font-headline text-display-lg text-text-main tabular-nums">10</h3>
+            <p class="text-body-sm text-success font-semibold mt-1">100% satisfaction score</p>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Recent Tickets Table -->
+      <section class="bg-light-surface rounded-md border border-border-subtle shadow-sm overflow-hidden">
+        <div class="p-5 border-b border-border-subtle flex flex-col sm:flex-row items-center justify-between gap-4">
+          <div>
+            <h2 class="font-headline text-title-md text-text-main">Recent Support Tickets</h2>
+            <p class="text-body-sm text-light-on-surface-container">Tickets logged for Acme Health organizational account</p>
+          </div>
+          <div class="flex items-center gap-3">
+            <div class="flex items-center gap-2">
+              <span class="text-body-sm text-light-on-surface-container">Filter:</span>
+              <select class="text-body-sm bg-light-surface-container border border-border-subtle rounded px-2.5 py-1.5 text-text-main focus:outline-none focus:ring-1 focus:ring-primary">
+                <option value="all">All Statuses</option>
+                <option value="open">Open</option>
+                <option value="in-progress">In Progress</option>
+                <option value="resolved">Resolved</option>
+              </select>
+            </div>
+            <a href="#all" class="text-label-md font-label text-primary hover:text-primary-hover font-semibold">View All</a>
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-left border-collapse">
+            <thead class="bg-light-surface-container border-b border-border-subtle text-light-on-surface-container">
+              <tr>
+                <th scope="col" class="py-3 px-5 font-label text-label-sm uppercase tracking-wider">Ticket ID</th>
+                <th scope="col" class="py-3 px-5 font-label text-label-sm uppercase tracking-wider">Subject</th>
+                <th scope="col" class="py-3 px-5 font-label text-label-sm uppercase tracking-wider">Category</th>
+                <th scope="col" class="py-3 px-5 font-label text-label-sm uppercase tracking-wider">Priority</th>
+                <th scope="col" class="py-3 px-5 font-label text-label-sm uppercase tracking-wider">Status</th>
+                <th scope="col" class="py-3 px-5 font-label text-label-sm uppercase tracking-wider">Created Date</th>
+                <th scope="col" class="py-3 px-5 font-label text-label-sm uppercase tracking-wider text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-border-subtle text-body-md text-text-main">
+              
+              <!-- Row 1 -->
+              <tr class="hover:bg-light-surface-container transition-colors">
+                <td class="py-4 px-5 font-code text-code-sm text-primary font-semibold">TCK-1001</td>
+                <td class="py-4 px-5">
+                  <p class="font-semibold text-text-main text-balance">SSO SAML login redirection error</p>
+                  <p class="text-body-sm text-light-on-surface-container">Redirect loops back to login page on Chrome v128...</p>
+                </td>
+                <td class="py-4 px-5 text-text-main">Technical Issue</td>
+                <td class="py-4 px-5">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-error-surface text-error">
+                    <span class="material-symbols-outlined text-label-sm">keyboard_double_arrow_up</span> Urgent
+                  </span>
+                </td>
+                <td class="py-4 px-5">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-info-surface text-info">
+                    <span class="w-1.5 h-1.5 rounded-full bg-info"></span> In Progress
+                  </span>
+                </td>
+                <td class="py-4 px-5 text-light-on-surface-container text-body-sm font-medium">Today, 09:24 AM</td>
+                <td class="py-4 px-5 text-right">
+                  <a href="#ticket-1001" class="inline-flex items-center gap-1 text-primary hover:text-primary-hover font-label text-label-md">
+                    <span>View Details</span>
+                    <span class="material-symbols-outlined text-title-md">arrow_forward</span>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Row 2 -->
+              <tr class="hover:bg-light-surface-container transition-colors">
+                <td class="py-4 px-5 font-code text-code-sm text-primary font-semibold">TCK-1004</td>
+                <td class="py-4 px-5">
+                  <p class="font-semibold text-text-main text-balance">Request for HIPAA Compliance BAA agreement</p>
+                  <p class="text-body-sm text-light-on-surface-container">Need executed enterprise security pack for annual audit</p>
+                </td>
+                <td class="py-4 px-5 text-text-main">Account Problem</td>
+                <td class="py-4 px-5">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-warning-surface text-warning">
+                    <span class="material-symbols-outlined text-label-sm">arrow_upward</span> High
+                  </span>
+                </td>
+                <td class="py-4 px-5">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-info-surface text-info">
+                    <span class="w-1.5 h-1.5 rounded-full bg-info"></span> In Progress
+                  </span>
+                </td>
+                <td class="py-4 px-5 text-light-on-surface-container text-body-sm font-medium">Yesterday, 04:12 PM</td>
+                <td class="py-4 px-5 text-right">
+                  <a href="#ticket-1004" class="inline-flex items-center gap-1 text-primary hover:text-primary-hover font-label text-label-md">
+                    <span>View Details</span>
+                    <span class="material-symbols-outlined text-title-md">arrow_forward</span>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Row 3 -->
+              <tr class="hover:bg-light-surface-container transition-colors">
+                <td class="py-4 px-5 font-code text-code-sm text-primary font-semibold">TCK-1007</td>
+                <td class="py-4 px-5">
+                  <p class="font-semibold text-text-main text-balance">Webhook payload format customization</p>
+                  <p class="text-body-sm text-light-on-surface-container">Inquiring about JSON schema customization on ticket close</p>
+                </td>
+                <td class="py-4 px-5 text-text-main">Feature Request</td>
+                <td class="py-4 px-5">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-light-surface-container text-text-main border border-border-subtle">
+                    <span class="material-symbols-outlined text-label-sm">drag_handle</span> Medium
+                  </span>
+                </td>
+                <td class="py-4 px-5">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-warning-surface text-warning">
+                    <span class="w-1.5 h-1.5 rounded-full bg-warning"></span> Open
+                  </span>
+                </td>
+                <td class="py-4 px-5 text-light-on-surface-container text-body-sm font-medium">Nov 17, 2026</td>
+                <td class="py-4 px-5 text-right">
+                  <a href="#ticket-1007" class="inline-flex items-center gap-1 text-primary hover:text-primary-hover font-label text-label-md">
+                    <span>View Details</span>
+                    <span class="material-symbols-outlined text-title-md">arrow_forward</span>
+                  </a>
+                </td>
+              </tr>
+
+              <!-- Row 4 -->
+              <tr class="hover:bg-light-surface-container transition-colors">
+                <td class="py-4 px-5 font-code text-code-sm text-primary font-semibold">TCK-0992</td>
+                <td class="py-4 px-5">
+                  <p class="font-semibold text-text-main text-balance">Seat allocation upgrade on Business Plan</p>
+                  <p class="text-body-sm text-light-on-surface-container">Added 5 additional engineer licenses successfully</p>
+                </td>
+                <td class="py-4 px-5 text-text-main">Billing</td>
+                <td class="py-4 px-5">
+                  <span class="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-light-surface-container text-light-on-surface-container border border-border-subtle">
+                    <span class="material-symbols-outlined text-label-sm">arrow_downward</span> Low
+                  </span>
+                </td>
+                <td class="py-4 px-5">
+                  <span class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-label-sm font-semibold bg-success-surface text-success">
+                    <span class="w-1.5 h-1.5 rounded-full bg-success"></span> Resolved
+                  </span>
+                </td>
+                <td class="py-4 px-5 text-light-on-surface-container text-body-sm font-medium">Nov 12, 2026</td>
+                <td class="py-4 px-5 text-right">
+                  <a href="#ticket-0992" class="inline-flex items-center gap-1 text-primary hover:text-primary-hover font-label text-label-md">
+                    <span>View Details</span>
+                    <span class="material-symbols-outlined text-title-md">arrow_forward</span>
+                  </a>
+                </td>
+              </tr>
+
+            </tbody>
+          </table>
+        </div>
+
+        <!-- Table Footer / Pagination -->
+        <div class="p-4 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between text-body-sm text-light-on-surface-container gap-3">
+          <span>Showing 4 recent tickets</span>
+          <div class="flex items-center gap-2">
+            <button type="button" disabled class="px-3 py-1 border border-border-subtle rounded text-light-on-surface-container bg-light-surface-container cursor-not-allowed text-body-sm">Previous</button>
+            <button type="button" class="px-3 py-1 bg-primary text-on-primary rounded font-semibold text-body-sm">1</button>
+            <button type="button" class="px-3 py-1 border border-border-subtle rounded hover:bg-light-surface-container text-body-sm">Next</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Knowledge Base & Support Contact Card Banner -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-light-surface p-6 rounded-md border border-border-subtle shadow-sm flex items-start gap-4">
+          <div class="p-3 bg-primary-subtle text-primary rounded-lg">
+            <span class="material-symbols-outlined text-headline-xl">menu_book</span>
+          </div>
+          <div>
+            <h3 class="font-headline text-title-md text-text-main mb-1">Self-Service Help Center</h3>
+            <p class="text-body-md text-light-on-surface-container mb-3">Explore 140+ setup tutorials, API documentation, and configuration guides.</p>
+            <a href="#docs" class="text-primary hover:text-primary-hover font-label text-label-md inline-flex items-center gap-1">
+              <span>Search Knowledge Base</span>
+              <span class="material-symbols-outlined text-body-sm">open_in_new</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="bg-light-surface p-6 rounded-md border border-border-subtle shadow-sm flex items-start gap-4">
+          <div class="p-3 bg-success-surface text-success rounded-lg">
+            <span class="material-symbols-outlined text-headline-xl">support_agent</span>
+          </div>
+          <div>
+            <h3 class="font-headline text-title-md text-text-main mb-1">Dedicated Account Lead</h3>
+            <p class="text-body-md text-light-on-surface-container mb-3">Your dedicated enterprise representative is available Mon–Fri, 9am–6pm EST.</p>
+            <p class="text-body-sm text-text-main font-semibold">Sarah Jenkins · Response SLA: &lt; 1 hour</p>
+          </div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+
+
+
+</body></html>

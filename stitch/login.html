@@ -1,0 +1,261 @@
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>HelpDesk — Sign In</title>
+  <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+  <script id="tailwind-config">/** @type {import('tailwindcss').Config} */
+globalThis.tailwind = globalThis.tailwind || {};
+globalThis.tailwind.config = {
+  darkMode: 'class',
+  theme: {
+    extend: {
+      colors: {
+        'primary': '#1D4ED8',
+        'primary-hover': '#1E40AF',
+        'primary-subtle': '#EFF6FF',
+        'on-primary': '#FFFFFF',
+        'nav-dark': '#111827',
+        'nav-border': '#1F2937',
+        'text-main': '#0F172A',
+        'text-muted': '#64748B',
+        'border-subtle': '#E2E8F0',
+        'success': '#166534',
+        'success-surface': '#DCFCE7',
+        'warning': '#9A3412',
+        'warning-surface': '#FFEDD5',
+        'error': '#991B1B',
+        'error-surface': '#FEE2E2',
+        'info': '#1E40AF',
+        'info-surface': '#DBEAFE',
+        'light-surface': '#FFFFFF',
+        'light-on-surface': '#0F172A',
+        'light-surface-container': '#F8FAFC',
+        'light-on-surface-container': '#334155',
+        'light-outline': '#CBD5E1',
+        'dark-surface': '#111827',
+        'dark-on-surface': '#F8FAFC',
+        'dark-surface-container': '#1F2937',
+        'dark-on-surface-container': '#E2E8F0',
+        'dark-outline': '#374151',
+      },
+      borderRadius: {
+        'sm': '4px',
+        'DEFAULT': '8px',
+        'md': '12px',
+        'lg': '16px',
+        'xl': '20px',
+        'full': '9999px',
+      },
+      spacing: {
+        'gutter-xs': '4px',
+        'gutter-sm': '8px',
+        'gutter-md': '16px',
+        'gutter-lg': '24px',
+        'gutter-xl': '32px',
+        'section': '48px',
+        'page-margin': '24px',
+      },
+      fontFamily: {
+        'display': ['"Red Hat Text"', 'sans-serif'],
+        'headline': ['"Red Hat Text"', 'sans-serif'],
+        'title': ['"Red Hat Text"', 'sans-serif'],
+        'body': ['"Instrument Sans"', 'sans-serif'],
+        'label': ['"Instrument Sans"', 'sans-serif'],
+        'code': ['"Spline Sans Mono"', 'monospace'],
+      },
+      fontSize: {
+        'display-lg': ['36px', { lineHeight: '44px', letterSpacing: '-0.5px', fontWeight: '700' }],
+        'display-lg-mobile': ['28px', { lineHeight: '36px', letterSpacing: '-0.25px', fontWeight: '700' }],
+        'headline-xl': ['28px', { lineHeight: '36px', fontWeight: '700' }],
+        'headline-xl-mobile': ['22px', { lineHeight: '28px', fontWeight: '700' }],
+        'headline-lg': ['22px', { lineHeight: '30px', fontWeight: '600' }],
+        'headline-lg-mobile': ['18px', { lineHeight: '24px', fontWeight: '600' }],
+        'title-md': ['16px', { lineHeight: '24px', fontWeight: '600' }],
+        'body-lg': ['16px', { lineHeight: '24px', fontWeight: '400' }],
+        'body-md': ['14px', { lineHeight: '20px', fontWeight: '400' }],
+        'body-sm': ['12px', { lineHeight: '16px', fontWeight: '400' }],
+        'label-lg': ['14px', { lineHeight: '20px', fontWeight: '600' }],
+        'label-md': ['12px', { lineHeight: '16px', letterSpacing: '0.2px', fontWeight: '600' }],
+        'label-sm': ['11px', { lineHeight: '14px', letterSpacing: '0.4px', fontWeight: '600' }],
+        'code-sm': ['12px', { lineHeight: '16px', fontWeight: '500' }],
+      },
+      transitionDuration: {
+        'state-change': '120ms',
+        'surface-enter': '200ms',
+        'surface-exit': '140ms',
+      },
+      transitionDelay: {
+        'state-change': '0ms',
+        'surface-enter': '0ms',
+        'surface-exit': '0ms',
+      },
+      transitionTimingFunction: {
+        'state-change': 'ease-out',
+        'surface-enter': 'cubic-bezier(0.16, 1, 0.3, 1)',
+        'surface-exit': 'cubic-bezier(0.4, 0, 1, 1)',
+      },
+    },
+  },
+};
+if (typeof module !== 'undefined') module.exports = globalThis.tailwind.config;
+</script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&amp;family=Red+Hat+Text:wght@500;600;700&amp;family=Spline+Sans+Mono:wght@500&amp;display=swap">
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=block" rel="stylesheet">
+  <style>
+    .material-symbols-outlined, .material-symbols-rounded, .material-symbols-sharp, .material-icons {
+      display: inline-block; width: 1em; height: 1em; line-height: 1 !important; box-sizing: content-box; overflow: hidden; white-space: nowrap; direction: ltr; vertical-align: middle;
+    }
+  </style>
+</head>
+<body class="bg-light-surface-container font-body text-text-main min-h-[1024px] flex flex-col justify-between" data-stitch-vh="min-h-[1024px]===min-h-screen">
+
+  <!-- Minimal Brand Header -->
+  <header class="w-full max-w-7xl mx-auto px-6 py-6 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded bg-primary flex items-center justify-center text-on-primary shadow-sm">
+        <span class="material-symbols-outlined text-headline-lg">headset_mic</span>
+      </div>
+      <span class="font-headline text-headline-lg font-bold tracking-tight text-text-main">HelpDesk</span>
+    </div>
+    <div class="flex items-center gap-4 text-body-sm text-text-main">
+      <span>Need an agent account?</span>
+      <a href="#register" class="font-label text-label-md text-primary hover:text-primary-hover font-semibold">Contact Admin</a>
+    </div>
+  </header>
+
+  <!-- Main Login Showcase Container -->
+  <main class="w-full max-w-7xl mx-auto px-6 py-8 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center flex-1">
+    
+    <!-- Left Hero & Product Value -->
+    <div class="lg:col-span-7 space-y-8 pr-0 lg:pr-8">
+      <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-primary-subtle text-primary border border-info-surface text-label-sm font-label">
+        <span class="material-symbols-outlined text-label-sm">auto_mode</span>
+        <span>Version 3.4 Live — Smart Resolution Engine</span>
+      </div>
+
+      <div class="space-y-4">
+        <h1 class="font-headline text-display-lg text-text-main tracking-tight leading-tight text-balance">
+          Enterprise customer support, organized and resolved at speed.
+        </h1>
+        <p class="text-body-lg text-light-on-surface-container max-w-xl text-pretty">
+          Connect your customers with dedicated support agents. Manage queues, enforce SLA targets, and gain real-time visibility across every channel.
+        </p>
+      </div>
+
+      <!-- Fast Role Switcher Sandbox Cards for reviewer demo -->
+      <div class="space-y-3 pt-2">
+        <p class="text-label-sm font-label text-light-on-surface-container uppercase tracking-wider">Fast Demo Workspaces:</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div class="bg-light-surface p-3.5 rounded border border-border-subtle shadow-sm">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-semibold bg-primary-subtle text-primary mb-1">Customer</span>
+            <p class="text-label-md font-semibold text-text-main">Elena Rostova</p>
+            <p class="text-body-sm text-light-on-surface-container truncate">elena@novapulse.io</p>
+          </div>
+          <div class="bg-light-surface p-3.5 rounded border border-border-subtle shadow-sm">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-semibold bg-info-surface text-info mb-1">Agent</span>
+            <p class="text-label-md font-semibold text-text-main">Sarah Jenkins</p>
+            <p class="text-body-sm text-light-on-surface-container truncate">s.jenkins@helpdesk.internal</p>
+          </div>
+          <div class="bg-light-surface p-3.5 rounded border border-border-subtle shadow-sm">
+            <span class="inline-flex items-center px-2 py-0.5 rounded text-label-sm font-semibold bg-warning-surface text-warning mb-1">Administrator</span>
+            <p class="text-label-md font-semibold text-text-main">David Sterling</p>
+            <p class="text-body-sm text-light-on-surface-container truncate">ops@helpdesk.com</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Trust signals -->
+      <div class="flex flex-wrap items-center gap-6 pt-4 text-light-on-surface-container text-body-sm">
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-body-md text-success">verified</span> 99.98% SLA Uptime</span>
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-body-md text-success">lock</span> SOC2 Type II Certified</span>
+        <span class="flex items-center gap-1.5"><span class="material-symbols-outlined text-body-md text-success">speed</span> &lt; 15m Median First Reply</span>
+      </div>
+    </div>
+
+    <!-- Right Login Card Form -->
+    <div class="lg:col-span-5 w-full">
+      <div class="bg-light-surface rounded-xl border border-border-subtle shadow-lg p-8 sm:p-10">
+        
+        <div class="mb-8">
+          <h2 class="font-headline text-headline-xl text-text-main mb-1.5">Welcome back</h2>
+          <p class="text-body-md text-light-on-surface-container">Enter your email and password to access your support workspace.</p>
+        </div>
+
+        <form class="space-y-5" onsubmit="event.preventDefault();">
+          
+          <!-- Email Field -->
+          <div class="space-y-1.5">
+            <label class="block font-label text-label-md text-text-main" for="email">Work Email</label>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3.5 top-3 text-light-on-surface-container text-title-md" aria-hidden="true">mail</span>
+              <input id="email" type="email" value="s.jenkins@helpdesk.internal" required class="w-full pl-10 pr-4 py-2.5 bg-light-surface border border-border-subtle rounded text-body-md text-text-main focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="name@company.com">
+            </div>
+          </div>
+
+          <!-- Password Field -->
+          <div class="space-y-1.5">
+            <div class="flex items-center justify-between">
+              <label class="block font-label text-label-md text-text-main" for="password">Password</label>
+              <a href="#reset" class="text-body-sm text-primary hover:text-primary-hover font-semibold">Forgot password?</a>
+            </div>
+            <div class="relative">
+              <span class="material-symbols-outlined absolute left-3.5 top-3 text-light-on-surface-container text-title-md" aria-hidden="true">lock</span>
+              <input id="password" type="password" value="••••••••••••" required class="w-full pl-10 pr-10 py-2.5 bg-light-surface border border-border-subtle rounded text-body-md text-text-main focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary transition-colors" placeholder="Enter your password">
+              <button type="button" class="absolute right-3 top-3 text-light-on-surface-container hover:text-text-main" aria-label="Toggle password visibility">
+                <span class="material-symbols-outlined text-title-md">visibility</span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Remember me & SSO check -->
+          <div class="flex items-center justify-between pt-1">
+            <label class="flex items-center gap-2 cursor-pointer">
+              <input type="checkbox" checked class="w-4 h-4 rounded border-border-subtle text-primary focus:ring-primary">
+              <span class="text-body-sm text-light-on-surface-container">Keep me signed in for 30 days</span>
+            </label>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="w-full py-2.5 px-4 bg-primary hover:bg-primary-hover text-on-primary font-label text-label-lg rounded shadow-sm flex items-center justify-center gap-2 transition-colors duration-state-change">
+            <span>Sign In to HelpDesk</span>
+            <span class="material-symbols-outlined text-title-md">arrow_forward</span>
+          </button>
+
+          <!-- Divider -->
+          <div class="relative my-6">
+            <div class="absolute inset-0 flex items-center"><div class="w-full border-t border-border-subtle"></div></div>
+            <div class="relative flex justify-center text-label-sm uppercase"><span class="bg-light-surface px-2 text-light-on-surface-container font-medium">Or continue with</span></div>
+          </div>
+
+          <!-- SSO Alternative -->
+          <button type="button" class="w-full py-2.5 px-4 bg-light-surface hover:bg-light-surface-container border border-border-subtle text-text-main font-label text-label-md rounded flex items-center justify-center gap-2 transition-colors">
+            <span class="material-symbols-outlined text-title-md text-primary">domain</span>
+            <span>Single Sign-On (Okta / Azure SAML)</span>
+          </button>
+
+        </form>
+
+        <!-- Registration link -->
+        <p class="mt-8 text-center text-body-sm text-light-on-surface-container">
+          New customer? 
+          <a href="#register" class="text-primary hover:text-primary-hover font-semibold">Create customer account</a>
+        </p>
+
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Footer -->
+  <footer class="w-full max-w-7xl mx-auto px-6 py-6 border-t border-border-subtle flex flex-col sm:flex-row items-center justify-between text-body-sm text-light-on-surface-container gap-4">
+    <p>© 2026 HelpDesk Global Technologies Inc. All rights reserved.</p>
+    <div class="flex items-center gap-6 font-medium">
+      <a href="#privacy" class="hover:text-text-main">Privacy Policy</a>
+      <a href="#terms" class="hover:text-text-main">Terms of Service</a>
+      <a href="#support" class="hover:text-text-main text-success">Status: Operational</a>
+    </div>
+  </footer>
+
+
+
+</body></html>
