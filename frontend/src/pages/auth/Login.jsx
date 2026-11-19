@@ -306,14 +306,13 @@ export default function Login() {
             </a>
 
             <a href="#terms" className="hover:text-slate-900">
-              Terms of Service
+              Terms of Service 
             </a>
 
             <a href="#support" className="text-green-600 font-medium">
               Status: Operational
             </a>
           </div>
-
         </div>
       </footer>
 
