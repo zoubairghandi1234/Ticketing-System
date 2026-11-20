@@ -4,6 +4,7 @@ import reactLogo from './assets/react.svg'
 import viteLogo from './assets/vite.svg'
 import './App.css'
 import Login from './pages/auth/Login'
+import CustomerDashboard from './pages/customer/Dashboard'
 
 function App() {
   const [count, setCount] = useState(0)
